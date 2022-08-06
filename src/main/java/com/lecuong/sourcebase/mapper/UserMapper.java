@@ -11,7 +11,9 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Component
@@ -33,6 +35,8 @@ public class UserMapper {
     public UserResponse to(User user) {
         UserResponse userResponse = new UserResponse();
         BeanUtils.refine(user, userResponse, BeanUtils::copyNonNull);
+        List<String> roleNames = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+        userResponse.setRoleName(roleNames);
         return userResponse;
     }
 }

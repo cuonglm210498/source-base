@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class UserFilterRequest extends BaseRequest {
 
+    private Long roleId;
     private String userName;
     private String address;
     private String email;

@@ -1,17 +1,36 @@
 package com.lecuong.sourcebase.specification;
 
+import com.lecuong.sourcebase.entity.Role;
 import com.lecuong.sourcebase.entity.User;
 import com.lecuong.sourcebase.modal.request.user.UserFilterRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
+import java.util.Collection;
+
 public class UserSpecification {
 
     public static Specification<User> filter(UserFilterRequest userFilterRequest) {
         return Specification.where(withUserName(userFilterRequest.getUserName()))
+                .and(withRoleId(userFilterRequest.getRoleId()))
                 .and(withAddress(userFilterRequest.getAddress()))
                 .and(withEmail(userFilterRequest.getEmail()))
                 .or(withUserNameLike(userFilterRequest.getUserName()));
+    }
+
+    public static Specification<User> withRoleId(Long roleId) {
+        if (roleId == null || roleId == 0)
+            return null;
+        return (root, query, criteriaBuilder) -> {
+            // Lay ra thong tin user thuoc roleId nao, su dung @ManyToMany thi lam nhu duoi
+            query.distinct(true);
+            Root<User> user = root;
+            Root<Role> role = query.from(Role.class);
+            Expression<Collection<User>> roleUsers = role.get("users");
+            return criteriaBuilder.and(criteriaBuilder.equal(role.get("id"), roleId), criteriaBuilder.isMember(user, roleUsers));
+        };
     }
 
     public static Specification<User> withUserName(String userName) {
