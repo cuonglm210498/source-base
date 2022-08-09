@@ -5,10 +5,7 @@ import com.lecuong.sourcebase.entity.User;
 import com.lecuong.sourcebase.exception.BusinessException;
 import com.lecuong.sourcebase.exception.StatusTemplate;
 import com.lecuong.sourcebase.mapper.UserMapper;
-import com.lecuong.sourcebase.modal.request.user.UserAuthRequest;
-import com.lecuong.sourcebase.modal.request.user.UserFilterRequest;
-import com.lecuong.sourcebase.modal.request.user.UserSaveRequest;
-import com.lecuong.sourcebase.modal.request.user.UserUpdateRequest;
+import com.lecuong.sourcebase.modal.request.user.*;
 import com.lecuong.sourcebase.modal.response.UserResponse;
 import com.lecuong.sourcebase.repository.UserRepository;
 import com.lecuong.sourcebase.service.UserService;
@@ -96,6 +93,13 @@ public class UserServiceImpl implements UserService {
 
         PageRequest pageRequest = PageRequest.of(userFilterRequest.getPageIndex(), userFilterRequest.getPageSize());
         Page<User> users = userRepository.findAll(UserSpecification.filter(userFilterRequest), pageRequest.previousOrFirst());
+        return users.map(userMapper::to);
+    }
+
+    @Override
+    public Page<UserResponse> filter(UserFilterWithListBlogRequest userFilterWithListBlogRequest) {
+        PageRequest pageRequest = PageRequest.of(userFilterWithListBlogRequest.getPageIndex(), userFilterWithListBlogRequest.getPageSize());
+        Page<User> users = userRepository.findAll(UserSpecification.filter(userFilterWithListBlogRequest), pageRequest.previousOrFirst());
         return users.map(userMapper::to);
     }
 }
