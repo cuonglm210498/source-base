@@ -5,10 +5,12 @@ import com.lecuong.sourcebase.entity.User;
 import com.lecuong.sourcebase.modal.request.user.UserFilterRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
+import java.util.List;
 
 public class UserSpecification {
 
@@ -17,6 +19,7 @@ public class UserSpecification {
                 .and(withRoleId(userFilterRequest.getRoleId()))
                 .and(withAddress(userFilterRequest.getAddress()))
                 .and(withEmail(userFilterRequest.getEmail()))
+                .and(withBlogId(userFilterRequest.getBlogId()))
                 .or(withUserNameLike(userFilterRequest.getUserName()));
     }
 
@@ -55,5 +58,11 @@ public class UserSpecification {
         if (StringUtils.isBlank(userName))
             return null;
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("userName"), "%" + userName + "%");
+    }
+
+    public static Specification<User> withBlogId(Long blogId) {
+        if (blogId == null || blogId <= 0)
+            return null;
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.join("blogs").get("id"), blogId);
     }
 }

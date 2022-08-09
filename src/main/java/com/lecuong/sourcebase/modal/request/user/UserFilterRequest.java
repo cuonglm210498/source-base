@@ -7,6 +7,7 @@ import lombok.Data;
 public class UserFilterRequest extends BaseRequest {
 
     private Long roleId;
+    private Long blogId;
     private String userName;
     private String address;
     private String email;
