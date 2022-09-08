@@ -22,6 +22,7 @@ public class UserSpecification {
                 .and(withAddress(userFilterRequest.getAddress()))
                 .and(withEmail(userFilterRequest.getEmail()))
                 .and(withBlogId(userFilterRequest.getBlogId()))
+                .and(withBlogUrl(userFilterRequest.getUrl()))
                 .or(withUserNameLike(userFilterRequest.getUserName()));
     }
 

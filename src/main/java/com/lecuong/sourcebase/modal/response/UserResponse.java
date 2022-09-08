@@ -17,6 +17,7 @@ public class UserResponse {
     private String phone;
     private String address;
     private String fullName;
+    private List<String> url;
 
     @JsonFormat(pattern = DateTimeCommon.DATE_TIME_FORMAT.DD_MM_YYYY, timezone = DateTimeCommon.DATE_TIME_FORMAT.TIME_ZONE)
     private LocalDate dateOfBirth;

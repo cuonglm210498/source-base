@@ -1,5 +1,6 @@
 package com.lecuong.sourcebase.mapper;
 
+import com.lecuong.sourcebase.entity.Blog;
 import com.lecuong.sourcebase.entity.Role;
 import com.lecuong.sourcebase.entity.User;
 import com.lecuong.sourcebase.modal.request.user.UserSaveRequest;
@@ -37,6 +38,7 @@ public class UserMapper {
         BeanUtils.refine(user, userResponse, BeanUtils::copyNonNull);
         List<String> roleNames = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
         userResponse.setRoleName(roleNames);
+        userResponse.setUrl(user.getBlogs().stream().map(Blog::getUrl).collect(Collectors.toList()));
         return userResponse;
     }
 }

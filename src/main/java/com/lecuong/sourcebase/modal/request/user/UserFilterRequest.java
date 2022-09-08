@@ -11,6 +11,7 @@ public class UserFilterRequest extends BaseRequest {
     private Long roleId;
     private Long blogId;
     private List<Long> userIds;
+    private String url;
     private String userName;
     private String address;
     private String email;
