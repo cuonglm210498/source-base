@@ -72,6 +72,12 @@ public class UserSpecification {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.join("blogs").get("id"), blogId);
     }
 
+    public static Specification<User> withBlogId(String url) {
+        if (StringUtils.isBlank(url))
+            return null;
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.join("blogs").get("url"), "%" + url + "%");
+    }
+
     public static Specification<User> withListBlogId(List<Long> blogIds) {
         if (CollectionUtils.isEmpty(blogIds))
             return null;
