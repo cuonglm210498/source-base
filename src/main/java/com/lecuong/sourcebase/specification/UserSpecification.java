@@ -80,4 +80,10 @@ public class UserSpecification {
             return root.join("blogs").get("id").in(blogIds);
         };
     }
+
+    public static Specification<User> withListUserId(List<Long> userIds) {
+        if (CollectionUtils.isEmpty(userIds))
+            return null;
+        return (root, query, criteriaBuilder) -> root.get("id").in(userIds);
+    }
 }
