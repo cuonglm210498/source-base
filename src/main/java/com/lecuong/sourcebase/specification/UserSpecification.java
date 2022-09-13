@@ -91,6 +91,7 @@ public class UserSpecification {
     public static Specification<User> withListUserId(List<Long> userIds) {
         if (CollectionUtils.isEmpty(userIds))
             return null;
+//        return (root, query, criteriaBuilder) -> criteriaBuilder.in(root.get("id").in(userIds));
         return (root, query, criteriaBuilder) -> root.get("id").in(userIds);
     }
 }
