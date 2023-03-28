@@ -14,4 +14,7 @@ public interface StatusTemplate {
             new StatusResponse("SHOP-USER-NOT-FOUND", "User not found", HttpStatus.NOT_FOUND);
     StatusResponse USER_MUST_LOGIN =
             new StatusResponse("SHOP-USER-MUST-LOGIN", "User must login", HttpStatus.BAD_REQUEST);
+
+    StatusResponse EMPLOYEE_NOT_FOUND =
+            new StatusResponse("SHOP-EMPLOYEE-NOT-FOUND", "Employee not found", HttpStatus.NOT_FOUND);
 }
