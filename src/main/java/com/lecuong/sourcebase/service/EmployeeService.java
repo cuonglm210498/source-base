@@ -2,6 +2,8 @@ package com.lecuong.sourcebase.service;
 
 import com.lecuong.sourcebase.modal.request.employee.EmployeeRequest;
 import com.lecuong.sourcebase.modal.response.EmployeeResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author CuongLM18
@@ -13,4 +15,6 @@ public interface EmployeeService {
     void save(EmployeeRequest employeeRequest);
 
     EmployeeResponse findById(Long id);
+
+    Page<EmployeeResponse> getAll(Pageable pageable);
 }

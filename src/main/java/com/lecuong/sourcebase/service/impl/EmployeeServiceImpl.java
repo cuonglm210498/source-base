@@ -9,6 +9,8 @@ import com.lecuong.sourcebase.modal.response.EmployeeResponse;
 import com.lecuong.sourcebase.repository.EmployeeRepository;
 import com.lecuong.sourcebase.service.EmployeeService;
 import lombok.Data;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,7 +36,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse findById(Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
-        employee.orElseThrow(() -> new BusinessException(StatusTemplate.EMPLOYEE_NOT_FOUND));
-        return employeeMapper.to(employee.get());
+        if (employee.isPresent()) {
+            return employeeMapper.to(employee.get());
+        } else {
+            throw new BusinessException(StatusTemplate.EMPLOYEE_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public Page<EmployeeResponse> getAll(Pageable pageable) {
+        Page<Employee> employees = employeeRepository.findAll(pageable.previousOrFirst());
+        return employees.map(employeeMapper::to);
     }
 }

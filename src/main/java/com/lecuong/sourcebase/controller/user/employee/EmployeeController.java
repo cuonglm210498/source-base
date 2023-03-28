@@ -3,7 +3,10 @@ package com.lecuong.sourcebase.controller.user.employee;
 import com.lecuong.sourcebase.modal.request.employee.EmployeeRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
 import com.lecuong.sourcebase.modal.response.EmployeeResponse;
+import com.lecuong.sourcebase.service.EmployeeService;
 import lombok.Data;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +31,13 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public ResponseEntity<BaseResponse<EmployeeResponse>> findById(@PathVariable Long id) {
         return ResponseEntity.ok(BaseResponse.ofSuccess(employeeService.findById(id)));
+    }
+
+    @GetMapping
+    public ResponseEntity<BaseResponse<Page<EmployeeResponse>>> getAll(@RequestParam int pageIndex,
+                                                                       @RequestParam int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize);
+        Page<EmployeeResponse> employeeResponses = employeeService.getAll(pageRequest);
+        return ResponseEntity.ok(BaseResponse.ofSuccess(employeeResponses));
     }
 }

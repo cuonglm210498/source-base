@@ -14,7 +14,7 @@ public class BlogSpecification {
                 .and(withUserId(blogFilterRequest.getUserId()))
                 .and(withKeyWord(blogFilterRequest.getKeyword()));
     }
-    
+
     public static Specification<Blog> withName(String name) {
         if (StringUtils.isBlank(name))
             return null;

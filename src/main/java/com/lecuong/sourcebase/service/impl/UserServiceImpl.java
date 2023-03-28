@@ -83,7 +83,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserResponse> getAll(Pageable pageable) {
-
         Page<User> users = userRepository.findAll(pageable.previousOrFirst());
         return users.map(userMapper::to);
     }

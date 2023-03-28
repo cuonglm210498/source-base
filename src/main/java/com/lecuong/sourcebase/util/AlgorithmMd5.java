@@ -3,7 +3,6 @@ package com.lecuong.sourcebase.util;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
 
 public class AlgorithmMd5 {
 
