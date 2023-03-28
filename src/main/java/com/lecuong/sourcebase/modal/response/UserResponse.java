@@ -19,7 +19,7 @@ public class UserResponse {
     private String fullName;
 //    private List<String> url;
 
-    @JsonFormat(pattern = DateTimeCommon.DATE_TIME_FORMAT.DD_MM_YYYY, timezone = DateTimeCommon.DATE_TIME_FORMAT.TIME_ZONE)
+    @JsonFormat(pattern = DateTimeCommon.DateTimeFormat.DD_MM_YYYY, timezone = DateTimeCommon.DateTimeFormat.TIME_ZONE)
     private LocalDate dateOfBirth;
 
     private String avatar;
