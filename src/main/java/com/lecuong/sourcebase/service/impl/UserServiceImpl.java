@@ -101,4 +101,20 @@ public class UserServiceImpl implements UserService {
         Page<User> users = userRepository.findAll(UserSpecification.filter(userFilterWithListBlogRequest), pageRequest.previousOrFirst());
         return users.map(userMapper::to);
     }
+
+    @Override
+    public boolean checkEmailExist(String email) {
+        return userRepository.countAllByEmail(email) > 0;
+    }
+
+    @Override
+    public boolean checkPhoneExits(String phone) {
+        return userRepository.countAllByPhone(phone) > 0;
+    }
+
+    @Override
+    public boolean checkUserNameExist(String userName) {
+        return userRepository.countAllByUserName(userName) > 0;
+    }
+
 }

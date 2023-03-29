@@ -20,8 +20,8 @@ public class UserController {
     private final UserService userService;
 
     @PutMapping("/{id}")
-    public ResponseEntity<BaseResponse<Void>> save(@PathVariable Long id,
-                                                   @RequestBody UserUpdateRequest userUpdateRequest) {
+    public ResponseEntity<BaseResponse<Void>> update(@PathVariable Long id,
+                                                     @RequestBody UserUpdateRequest userUpdateRequest) {
         userService.update(id, userUpdateRequest);
         return ResponseEntity.ok(BaseResponse.ofSuccess(null));
     }
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BaseResponse<UserResponse>> save(@PathVariable Long id) {
+    public ResponseEntity<BaseResponse<UserResponse>> findById(@PathVariable Long id) {
         UserResponse userResponse =userService.findById(id);
         return ResponseEntity.ok(BaseResponse.ofSuccess(userResponse));
     }

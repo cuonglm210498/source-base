@@ -23,4 +23,10 @@ public interface UserService {
     Page<UserResponse> filter(UserFilterRequest userFilterRequest);
 
     Page<UserResponse> filter(UserFilterWithListBlogRequest userFilterWithListBlogRequest);
+
+    boolean checkEmailExist(String email);
+
+    boolean checkPhoneExits(String phone);
+
+    boolean checkUserNameExist(String userName);
 }

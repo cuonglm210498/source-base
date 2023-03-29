@@ -9,4 +9,10 @@ import java.util.Optional;
 public interface UserRepository extends BaseRepository<User, Long> {
 
     Optional<User> findByUserNameAndPassword(String userName, String password);
+
+    long countAllByUserName(String userName);
+
+    long countAllByEmail(String email);
+
+    long countAllByPhone(String phone);
 }

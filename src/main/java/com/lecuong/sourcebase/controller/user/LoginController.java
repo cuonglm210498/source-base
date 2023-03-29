@@ -6,6 +6,7 @@ import com.lecuong.sourcebase.modal.response.UserResponse;
 import com.lecuong.sourcebase.security.jwt.TokenProducer;
 import com.lecuong.sourcebase.security.jwt.model.JwtPayLoad;
 import com.lecuong.sourcebase.service.UserService;
+import com.lecuong.sourcebase.validate.UserValidator;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/user/login")
 public class LoginController {
 
+    private final UserValidator userValidator;
     private final UserService userService;
     private final TokenProducer tokenProducer;
 
     @PostMapping
     public ResponseEntity<BaseResponse<String>> login(@RequestBody UserAuthRequest userAuthRequest) {
+
+        //Validate userAuthRequest
+        userValidator.validateUserAuthRequest(userAuthRequest);
+
         UserResponse userResponse = userService.auth(userAuthRequest);
         JwtPayLoad jwtPayload = createPayload(userResponse);
         String token = tokenProducer.token(jwtPayload);
