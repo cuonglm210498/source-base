@@ -1,4 +1,4 @@
-package com.lecuong.sourcebase.controller.user.employee;
+package com.lecuong.sourcebase.controller.employee;
 
 import com.lecuong.sourcebase.modal.request.employee.EmployeeRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
