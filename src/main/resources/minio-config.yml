@@ -1,13 +1,13 @@
 minio:
-  endPoint: http://localhost:9000
-  accessKey: root
-  secretKey: abcd1234
-  bucketName: com.lecuong
+  endPoint: "http://localhost:9000"
+  accessKey: "root"
+  secretKey: "abcd1234"
+  bucketName: "com.lecuong"
 
 # Hướng dẫn cài đặt minio trên docker
 # pull image tu docker hub ve may tinh: https://hub.docker.com/r/bitnami/minio
-# tao thu muc docker-compose va copy file minio.yml vao do
-# chay lenh docker compose -f .\minio.yml up -d
+# tao thu muc docker-compose va copy file minio-config.yml vao do
+# chay lenh docker compose -f .\minio-config.yml up -d
 
 # Hướng dẫn cài đặt minio trên windows
 # https://stackjava.com/minio/minio-la-gi-huong-dan-cai-dat-minio-tren-windows.html

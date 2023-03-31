@@ -2,6 +2,7 @@ package com.lecuong.sourcebase.config;
 
 import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -12,7 +13,8 @@ import org.springframework.context.annotation.PropertySource;
  * @project source-base
  */
 @Configuration
-@PropertySource(value = "classpath:minio.yml")
+@EnableConfigurationProperties
+@PropertySource(value = "classpath:minio.properties")
 public class MinioConfig {
 
     @Value("${minio.endPoint}")

@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,13 +30,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @Data
 @Service
-@PropertySource(value = "classpath:minio.yml")
+@PropertySources({@PropertySource(value = "classpath:minio.properties")})
 public class AttachFileServiceImpl implements AttachFileService {
 
     @Value("${minio.bucketName}")
     private String bucketName;
 
     private final MinioClient minioClient;
+
     private final AttachFileRepository attachFileRepository;
 
     private static final String FOLDER_NAME = "attachments/";
