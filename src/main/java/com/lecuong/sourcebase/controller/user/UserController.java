@@ -2,6 +2,7 @@ package com.lecuong.sourcebase.controller.user;
 
 import com.lecuong.sourcebase.modal.request.user.UserFilterRequest;
 import com.lecuong.sourcebase.modal.request.user.UserFilterWithListBlogRequest;
+import com.lecuong.sourcebase.modal.request.user.UserSaveRequest;
 import com.lecuong.sourcebase.modal.request.user.UserUpdateRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
 import com.lecuong.sourcebase.modal.response.UserResponse;
@@ -56,5 +57,10 @@ public class UserController {
     public ResponseEntity<BaseResponse<Page<UserResponse>>> filter(@RequestBody UserFilterWithListBlogRequest userFilterWithListBlogRequest) {
         Page<UserResponse> userResponses = userService.filter(userFilterWithListBlogRequest);
         return ResponseEntity.ok(BaseResponse.ofSuccess(userResponses));
+    }
+
+    @PostMapping("/message")
+    public ResponseEntity<BaseResponse<String>> getMessage(@RequestBody UserSaveRequest userRequest) {
+        return ResponseEntity.ok(BaseResponse.ofSuccess(userService.getMessage(userRequest)));
     }
 }

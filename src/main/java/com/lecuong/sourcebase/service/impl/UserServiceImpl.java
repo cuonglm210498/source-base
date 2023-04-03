@@ -1,8 +1,11 @@
 package com.lecuong.sourcebase.service.impl;
 
+import com.lecuong.sourcebase.common.MessageCommon;
+import com.lecuong.sourcebase.constant.MessageConstant;
 import com.lecuong.sourcebase.entity.Role;
 import com.lecuong.sourcebase.entity.User;
 import com.lecuong.sourcebase.exception.BusinessException;
+import com.lecuong.sourcebase.exception.StatusResponse;
 import com.lecuong.sourcebase.exception.StatusTemplate;
 import com.lecuong.sourcebase.mapper.UserMapper;
 import com.lecuong.sourcebase.modal.request.user.*;
@@ -15,6 +18,7 @@ import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final MessageCommon messageCommon;
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
@@ -117,4 +122,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.countAllByUserName(userName) > 0;
     }
 
+    @Override
+    public String getMessage(UserSaveRequest userSaveRequest) {
+        if (userSaveRequest.getUserName() == null) {
+            throw new BusinessException(
+                    new StatusResponse(
+                            MessageConstant.ERROR_NOT_FOUND,
+                            messageCommon.getMessage(MessageConstant.ERROR_NOT_FOUND),
+                            HttpStatus.NOT_FOUND));
+        }
+        return "Save successfully";
+    }
 }

@@ -29,4 +29,6 @@ public interface UserService {
     boolean checkPhoneExits(String phone);
 
     boolean checkUserNameExist(String userName);
+
+    String getMessage(UserSaveRequest userSaveRequest);
 }

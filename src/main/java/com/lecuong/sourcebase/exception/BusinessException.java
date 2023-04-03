@@ -10,4 +10,6 @@ public class BusinessException extends RuntimeException {
     public BusinessException(StatusResponse statusResponse) {
         this.statusResponse = statusResponse;
     }
+
+
 }

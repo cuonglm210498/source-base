@@ -1,5 +1,6 @@
 package com.lecuong.sourcebase.exception;
 
+import com.lecuong.sourcebase.constant.MessageConstant;
 import org.springframework.http.HttpStatus;
 
 public interface StatusTemplate {

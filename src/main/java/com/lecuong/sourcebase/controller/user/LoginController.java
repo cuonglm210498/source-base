@@ -27,7 +27,7 @@ public class LoginController {
     public ResponseEntity<BaseResponse<String>> login(@RequestBody UserAuthRequest userAuthRequest) {
 
         //Validate userAuthRequest
-        userValidator.validateUserAuthRequest(userAuthRequest);
+//        userValidator.validateUserAuthRequest(userAuthRequest);
 
         UserResponse userResponse = userService.auth(userAuthRequest);
         JwtPayLoad jwtPayload = createPayload(userResponse);
