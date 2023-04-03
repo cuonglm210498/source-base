@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> user = userRepository.findByUserNameAndPassword(userAuthRequest.getUserName(), password);
 
-        return this.checkUserContain(user);
+        return this.checkUserExist(user);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse findById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        return this.checkUserContain(user);
+        return this.checkUserExist(user);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
         return "Save successfully";
     }
 
-    private UserResponse checkUserContain(Optional<User> user) {
+    private UserResponse checkUserExist(Optional<User> user) {
         if (user.isPresent()) {
             UserResponse userResponse = userMapper.to(user.get());
 
