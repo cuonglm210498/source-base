@@ -38,14 +38,8 @@ public class UserServiceImpl implements UserService {
         String password = AlgorithmSha.hash(userAuthRequest.getPassword());
 
         Optional<User> user = userRepository.findByUserNameAndPassword(userAuthRequest.getUserName(), password);
-        user.orElseThrow(() -> new BusinessException(StatusTemplate.USER_NOT_FOUND));
 
-        UserResponse userResponse = userMapper.to(user.get());
-
-        List<String> roles = user.get().getRoles().stream().map(Role::getName).collect(Collectors.toList());
-        userResponse.setRoleName(roles);
-
-        return userResponse;
+        return this.checkUserContain(user);
     }
 
     @Override
@@ -56,34 +50,35 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(Long id, UserUpdateRequest userUpdateRequest) {
-        userRepository.findById(id)
-                .map(user -> {
-                    user.setPassword(AlgorithmSha.hash(userUpdateRequest.getPassword()));
-                    user.setEmail(userUpdateRequest.getEmail());
-                    user.setPhone(userUpdateRequest.getPhone());
-                    user.setAddress(userUpdateRequest.getAddress());
-                    user.setFullName(userUpdateRequest.getFullName());
-                    user.setDateOfBirth(userUpdateRequest.getDateOfBirth());
-                    user.setAvatar(userUpdateRequest.getAvatar());
-                    return userRepository.save(user);
-                })
-                .orElseThrow(() -> new BusinessException(StatusTemplate.USER_NOT_FOUND));
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            user.get().setPassword(AlgorithmSha.hash(userUpdateRequest.getPassword()));
+            user.get().setEmail(userUpdateRequest.getEmail());
+            user.get().setPhone(userUpdateRequest.getPhone());
+            user.get().setAddress(userUpdateRequest.getAddress());
+            user.get().setFullName(userUpdateRequest.getFullName());
+            user.get().setDateOfBirth(userUpdateRequest.getDateOfBirth());
+            user.get().setAvatar(userUpdateRequest.getAvatar());
+            userRepository.save(user.get());
+        } else {
+            throw new BusinessException(StatusTemplate.USER_NOT_FOUND);
+        }
     }
 
     @Override
     public void delete(Long id) {
         Optional<User> user = userRepository.findById(id);
-        user.orElseThrow(() -> new BusinessException(StatusTemplate.USER_NOT_FOUND));
-
-        userRepository.deleteById(id);
+        if (user.isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw new BusinessException(StatusTemplate.USER_NOT_FOUND);
+        }
     }
 
     @Override
     public UserResponse findById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        user.orElseThrow(() -> new BusinessException(StatusTemplate.USER_NOT_FOUND));
-
-        return userMapper.to(user.get());
+        return this.checkUserContain(user);
     }
 
     @Override
@@ -132,5 +127,18 @@ public class UserServiceImpl implements UserService {
                             HttpStatus.NOT_FOUND));
         }
         return "Save successfully";
+    }
+
+    private UserResponse checkUserContain(Optional<User> user) {
+        if (user.isPresent()) {
+            UserResponse userResponse = userMapper.to(user.get());
+
+            List<String> roles = user.get().getRoles().stream().map(Role::getName).collect(Collectors.toList());
+            userResponse.setRoleName(roles);
+
+            return userResponse;
+        } else {
+            throw new BusinessException(StatusTemplate.USER_NOT_FOUND);
+        }
     }
 }
