@@ -1,6 +1,8 @@
 package com.lecuong.sourcebase.service.impl;
 
 import com.lecuong.sourcebase.entity.AttachFile;
+import com.lecuong.sourcebase.exception.BusinessException;
+import com.lecuong.sourcebase.exception.StatusTemplate;
 import com.lecuong.sourcebase.modal.request.attachfile.AttachFileRequest;
 import com.lecuong.sourcebase.modal.response.AttachFileResponse;
 import com.lecuong.sourcebase.repository.AttachFileRepository;
@@ -82,7 +84,7 @@ public class AttachFileServiceImpl implements AttachFileService {
                             .contentType(file.getContentType())
                             .build());
                 } catch (Exception e) {
-                    throw new RuntimeException("Thao tác với file thất bại");
+                    throw new BusinessException(StatusTemplate.FILE_MANIPULATION_FAILED);
                 }
 
                 //save to db
@@ -116,7 +118,7 @@ public class AttachFileServiceImpl implements AttachFileService {
     @Override
     public void deleteFile(Long id) {
         AttachFile attachFile = attachFileRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tồn tại file"));
+                .orElseThrow(() -> new BusinessException(StatusTemplate.FILE_NOT_FOUND));
 
         try {
             minioClient.removeObject(RemoveObjectArgs.builder()
@@ -126,7 +128,7 @@ public class AttachFileServiceImpl implements AttachFileService {
 
             attachFileRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Thao tác với file thất bại");
+            throw new BusinessException(StatusTemplate.FILE_MANIPULATION_FAILED);
         }
 
     }
@@ -156,7 +158,7 @@ public class AttachFileServiceImpl implements AttachFileService {
     @Override
     public AttachFileResponse getFileById(Long id) {
         AttachFile attachFile = attachFileRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tồn tại file"));
+                .orElseThrow(() -> new BusinessException(StatusTemplate.FILE_NOT_FOUND));
 
         try {
             GetObjectResponse fileResponse = minioClient.getObject(GetObjectArgs.builder()
@@ -174,7 +176,7 @@ public class AttachFileServiceImpl implements AttachFileService {
 
             return response;
         } catch (Exception e) {
-            throw new RuntimeException("Lỗi khi thao tác với file");
+            throw new BusinessException(StatusTemplate.FILE_ERROR);
         }
     }
 
@@ -183,7 +185,7 @@ public class AttachFileServiceImpl implements AttachFileService {
         Boolean isNotInAcceptContentType = Arrays.stream(ACCEPT_CONTENT_TYPE).noneMatch(s -> s.equalsIgnoreCase(contentType));
 
         if (contentType == null || isNotInAcceptContentType) {
-            throw new RuntimeException("Định dạng file không hợp lệ. Bạn cần chọn loại file khác! Định dạng file thỏa mãn bao gồm: excel, pdf, word, mp3, mp4, rar, zip, file ảnh");
+            throw new BusinessException(StatusTemplate.FILE_INVALID_FORMAT);
         }
     }
 

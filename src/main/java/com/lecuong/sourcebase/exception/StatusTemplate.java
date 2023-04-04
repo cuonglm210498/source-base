@@ -55,4 +55,16 @@ public interface StatusTemplate {
      */
     StatusResponse EMPLOYEE_NOT_FOUND =
             new StatusResponse("SHOP-EMPLOYEE-NOT-FOUND", "Employee not found", HttpStatus.NOT_FOUND);
+
+    /**
+     * Exception AttackFile
+     */
+    StatusResponse FILE_ERROR =
+            new StatusResponse("SHOP-FILE-OPERATION", "Error when operation with file", HttpStatus.BAD_REQUEST);
+    StatusResponse FILE_INVALID_FORMAT =
+            new StatusResponse("SHOP-FILE-INVALID_FORMAT", "Invalid file format. You need to choose another file type! Satisfying file formats include: excel, pdf, word, mp3, mp4, rar, zip, image file", HttpStatus.BAD_REQUEST);
+    StatusResponse FILE_NOT_FOUND =
+            new StatusResponse("SHOP-FILE-NOT-FOUND", "File not found", HttpStatus.NOT_FOUND);
+    StatusResponse FILE_MANIPULATION_FAILED =
+            new StatusResponse("SHOP-FILE-MANIPULATION-FAILED", "File manipulation failed", HttpStatus.BAD_REQUEST);
 }
