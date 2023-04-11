@@ -4,6 +4,7 @@ import com.lecuong.sourcebase.common.CommonKafkaProperty;
 import com.lecuong.sourcebase.kafka.service.MessageProducerService;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,5 +27,10 @@ public class KafkaController {
     public ResponseEntity<String> sendMessage(@RequestParam String message) {
         messageProducerService.send(commonKafkaProperty.getTopic(), message);
         return ResponseEntity.ok("Message sent to Kafka");
+    }
+
+    @KafkaListener(topics = "test", groupId = "group-id")
+    public void listen(String message) {
+        System.out.println("Received Log History in group - group-id: " + message);
     }
 }
