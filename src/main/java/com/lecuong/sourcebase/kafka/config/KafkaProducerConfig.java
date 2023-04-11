@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Data
 @Configuration
-@PropertySources({@PropertySource(value = "classpath:kafka-config.properties")})
+@PropertySource(value = "classpath:kafka-config.properties")
 public class KafkaProducerConfig {
 
     private final CommonKafkaProperty commonProperty;

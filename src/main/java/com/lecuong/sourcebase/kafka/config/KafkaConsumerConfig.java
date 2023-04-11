@@ -7,7 +7,6 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -24,7 +23,7 @@ import java.util.Map;
 @Data
 @Configuration
 @EnableKafka
-@PropertySources({@PropertySource(value = "classpath:kafka-config.properties")})
+@PropertySource(value = "classpath:kafka-config.properties")
 public class KafkaConsumerConfig {
 
     private final CommonKafkaProperty commonProperty;
