@@ -40,7 +40,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         sql.append("u.email, ");
         sql.append("u.full_name, ");
         sql.append("u.phone, ");
-        sql.append("u.user_name ");
+        sql.append("u.user_name, ");
+        sql.append("COUNT(1) over(PARTITION BY 1) totalCount ");
         sql.append("FROM user u ");
 
         if (pageable != null) {
@@ -67,6 +68,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             userResponse.setFullName(DataUtil.safeToString(o[i++]));
             userResponse.setPhone(DataUtil.safeToString(o[i++]));
             userResponse.setUserName(DataUtil.safeToString(o[i++]));
+            userResponse.setTotalCount(DataUtil.safeToInt(o[i]));
 
             userResponses.add(userResponse);
         }

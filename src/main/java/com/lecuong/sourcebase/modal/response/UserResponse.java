@@ -24,4 +24,5 @@ public class UserResponse {
 
     private String avatar;
     private transient List<String> roleName;
+    private Integer totalCount;
 }
