@@ -11,6 +11,7 @@ import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Data
@@ -40,6 +41,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<BaseResponse<Page<UserResponse>>> getAll(@RequestParam int pageIndex,
                                                                    @RequestParam int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageIndex, pageSize);
