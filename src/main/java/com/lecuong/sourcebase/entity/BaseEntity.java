@@ -39,4 +39,10 @@ public class BaseEntity {
     @LastModifiedBy
     @Column(insertable = false)
     private String modifiedBy;
+
+    @Column(columnDefinition = "Boolean default true")
+    private Boolean isActive = true;
+
+    @Column(columnDefinition = "Boolean default false")
+    private Boolean isDeleted = false;
 }
