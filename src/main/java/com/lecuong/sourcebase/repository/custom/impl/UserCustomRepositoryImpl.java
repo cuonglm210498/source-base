@@ -34,8 +34,9 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             "FROM user u " +
             "INNER JOIN permission p ON u.id = p.user_id " +
             "INNER JOIN role r ON p.role_id = r.id " +
-            "WHERE 1 = 1 " +
-            "GROUP BY u.id";
+            "WHERE 1 = 1 ";
+
+    private static final String GROUP_BY_USER_ID = "GROUP BY u.id";
 
     @PersistenceContext
     EntityManager entityManager;
@@ -47,6 +48,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
         StringBuilder sql = new StringBuilder();
         sql.append(SELECT_USER_WITH_ROLE);
+        sql.append(GROUP_BY_USER_ID);
 
         if (pageable != null) {
             sql.append(" limit :size OFFSET :page ");
@@ -104,6 +106,12 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             sql.append(" AND u.date_of_birth < DATE_ADD(:dateOfBirthTo, INTERVAL 1 DAY) ");
         }
 
+        if (!DataUtil.isNullOrEmpty(filter.getRoleId())) {
+            sql.append(" AND r.id in (:roleId) ");
+        }
+
+        sql.append(GROUP_BY_USER_ID);
+
         if (pageable != null) {
             sql.append(" limit :size OFFSET :page ");
         }
@@ -127,6 +135,9 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         }
         if (!DataUtil.isNullOrEmpty(filter.getDateOfBirthTo())) {
             query.setParameter("dateOfBirthTo", filter.getDateOfBirthTo());
+        }
+        if (!DataUtil.isNullOrEmpty(filter.getRoleId())) {
+            query.setParameter("roleId", filter.getRoleId());
         }
 
         if (pageable != null) {
