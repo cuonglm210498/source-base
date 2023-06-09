@@ -1,7 +1,6 @@
 package com.lecuong.sourcebase.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
@@ -9,9 +8,7 @@ import java.math.BigInteger;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author CuongLM18
@@ -47,6 +44,14 @@ public class DataUtil {
 
     public static String safeToString(Object obj1) {
         return safeToString(obj1, "");
+    }
+
+    public static String[] safeToArrayString(Object obj1) {
+        return safeToString(obj1, "").split(", ");
+    }
+
+    public static List<String> safeToListString(Object obj1) {
+        return Arrays.asList(safeToString(obj1, "").split(", "));
     }
 
     public static Date safeToDate(Object obj1) {

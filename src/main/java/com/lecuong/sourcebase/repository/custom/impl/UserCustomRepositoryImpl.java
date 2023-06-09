@@ -23,6 +23,20 @@ import java.util.List;
 @Repository
 public class UserCustomRepositoryImpl implements UserCustomRepository {
 
+    private static final String SELECT_USER =
+            "SELECT u.id, u.address, u.avatar, u.date_of_birth, u.email, u.full_name, u.phone, u.user_name, " +
+            "COUNT(1) over(PARTITION BY 1) totalCount " +
+            "FROM user u " +
+            "WHERE 1 = 1 ";
+
+    private static final String SELECT_USER_WITH_ROLE =
+            "SELECT u.id, u.address, u.avatar, u.date_of_birth, u.email, u.full_name, u.phone, u.user_name, group_concat(' ', r.name) " +
+            "FROM user u " +
+            "INNER JOIN permission p ON u.id = p.user_id " +
+            "INNER JOIN role r ON p.role_id = r.id " +
+            "WHERE 1 = 1 " +
+            "GROUP BY u.id";
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -32,17 +46,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         List<UserResponse> userResponses = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT ");
-        sql.append("u.id, ");
-        sql.append("u.address, ");
-        sql.append("u.avatar, ");
-        sql.append("u.date_of_birth, ");
-        sql.append("u.email, ");
-        sql.append("u.full_name, ");
-        sql.append("u.phone, ");
-        sql.append("u.user_name, ");
-        sql.append("COUNT(1) over(PARTITION BY 1) totalCount ");
-        sql.append("FROM user u ");
+        sql.append(SELECT_USER_WITH_ROLE);
 
         if (pageable != null) {
             sql.append(" limit :size OFFSET :page ");
@@ -68,7 +72,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             userResponse.setFullName(DataUtil.safeToString(o[i++]));
             userResponse.setPhone(DataUtil.safeToString(o[i++]));
             userResponse.setUserName(DataUtil.safeToString(o[i++]));
-            userResponse.setTotalCount(DataUtil.safeToInt(o[i]));
+            userResponse.setRoleName(DataUtil.safeToListString(o[i++]));
+//            userResponse.setTotalCount(DataUtil.safeToInt(o[i]));
 
             userResponses.add(userResponse);
         }
@@ -81,17 +86,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         List<UserResponse> userResponses = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT ");
-        sql.append("u.id, ");
-        sql.append("u.address, ");
-        sql.append("u.avatar, ");
-        sql.append("u.date_of_birth, ");
-        sql.append("u.email, ");
-        sql.append("u.full_name, ");
-        sql.append("u.phone, ");
-        sql.append("u.user_name ");
-        sql.append("FROM user u ");
-        sql.append("WHERE 1 = 1 ");
+        sql.append(SELECT_USER_WITH_ROLE);
 
         if (!DataUtil.isNullOrEmpty(filter.getUserName())) {
             sql.append(" AND lower(u.user_name) LIKE lower(:userName) ");
@@ -152,6 +147,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             userResponse.setFullName(DataUtil.safeToString(o[i++]));
             userResponse.setPhone(DataUtil.safeToString(o[i++]));
             userResponse.setUserName(DataUtil.safeToString(o[i++]));
+            userResponse.setRoleName(DataUtil.safeToListString(o[i++]));
 
             userResponses.add(userResponse);
         }
