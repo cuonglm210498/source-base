@@ -30,7 +30,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             "WHERE 1 = 1 ";
 
     private static final String SELECT_USER_WITH_ROLE =
-            "SELECT u.id, u.address, u.avatar, u.date_of_birth, u.email, u.full_name, u.phone, u.user_name, group_concat(' ', r.name) " +
+            "SELECT u.id, u.address, u.avatar, u.date_of_birth, u.email, u.full_name, u.phone, u.user_name, group_concat(' ', r.name), " +
+            "COUNT(u.id) over(PARTITION BY u.id) totalCount " +
             "FROM user u " +
             "INNER JOIN permission p ON u.id = p.user_id " +
             "INNER JOIN role r ON p.role_id = r.id " +
@@ -159,6 +160,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
             userResponse.setPhone(DataUtil.safeToString(o[i++]));
             userResponse.setUserName(DataUtil.safeToString(o[i++]));
             userResponse.setRoleName(DataUtil.safeToListString(o[i++]));
+            userResponse.setTotalCount(DataUtil.safeToInt(o[i]));
 
             userResponses.add(userResponse);
         }
