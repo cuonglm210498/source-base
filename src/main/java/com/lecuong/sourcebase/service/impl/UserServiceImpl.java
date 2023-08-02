@@ -131,6 +131,11 @@ public class UserServiceImpl implements UserService {
         return "Save successfully";
     }
 
+    @Override
+    public List<UserResponse> getAll() {
+        return userRepository.findAll().stream().map(userMapper::to).collect(Collectors.toList());
+    }
+
     private UserResponse checkUserExist(Optional<User> user) {
         if (user.isPresent()) {
             UserResponse userResponse = userMapper.to(user.get());

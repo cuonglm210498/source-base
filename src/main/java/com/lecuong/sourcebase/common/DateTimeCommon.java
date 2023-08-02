@@ -13,6 +13,7 @@ public class DateTimeCommon {
 
         private DateTimeFormat() {}
 
+        public static final String DD_MM_YY = "ddMMyy";
         public static final String YYYY_MM_DD = "yyyy-MM-dd";
         public static final String YYYY_MM_DD_HYPHEN = "yyyy-MM-dd HH:mm:ss";
         public static final String DD_MM_YYYY = "dd/MM/yyyy";

@@ -1,24 +1,37 @@
 package com.lecuong.sourcebase.controller.user;
 
+import com.lecuong.sourcebase.common.DateTimeCommon;
+import com.lecuong.sourcebase.constant.TemplateReportConstant;
+import com.lecuong.sourcebase.controller.BaseController;
 import com.lecuong.sourcebase.modal.request.user.UserFilterRequest;
 import com.lecuong.sourcebase.modal.request.user.UserFilterWithListBlogRequest;
 import com.lecuong.sourcebase.modal.request.user.UserSaveRequest;
 import com.lecuong.sourcebase.modal.request.user.UserUpdateRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
 import com.lecuong.sourcebase.modal.response.UserResponse;
+import com.lecuong.sourcebase.service.ReportService;
 import com.lecuong.sourcebase.service.UserService;
 import lombok.Data;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 @Data
 @RestController
 @RequestMapping("/api/v1/user")
-public class UserController {
+public class UserController extends BaseController {
 
+    private final String FILE_NAME = "author_report_%s.xlsx";
+
+    private final ReportService reportService;
     private final UserService userService;
 
     @PutMapping("/{id}")
@@ -64,5 +77,19 @@ public class UserController {
     @PostMapping("/message")
     public ResponseEntity<BaseResponse<String>> getMessage(@RequestBody UserSaveRequest userRequest) {
         return ResponseEntity.ok(BaseResponse.ofSuccess(userService.getMessage(userRequest)));
+    }
+
+    @GetMapping("/export-excel")
+    public ResponseEntity<InputStreamResource> exportExcel() {
+        String fileName = String.format(FILE_NAME, new SimpleDateFormat(DateTimeCommon.DateTimeFormat.DD_MM_YY).format(new Date()));
+
+        var data = new HashMap<String, Object>();
+        List<UserResponse> responses = userService.getAll();
+        data.put("data", responses);
+
+        return downloadFile(
+                fileName,
+                reportService.toInputStreamResource(reportService.genXlsxLocal(data, TemplateReportConstant.AUTHOR_REPORT_TEMPLATE))
+        );
     }
 }
