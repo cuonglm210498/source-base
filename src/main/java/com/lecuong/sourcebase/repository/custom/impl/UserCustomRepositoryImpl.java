@@ -3,7 +3,7 @@ package com.lecuong.sourcebase.repository.custom.impl;
 import com.lecuong.sourcebase.modal.request.user.UserFilterRequest;
 import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import com.lecuong.sourcebase.repository.custom.UserCustomRepository;
-import com.lecuong.sourcebase.util.DataUtil;
+import com.lecuong.sourcebase.util.DataUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -58,7 +58,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         Query query = entityManager.createNativeQuery(sql.toString());
 
         if (pageable != null) {
-            query.setParameter("page", DataUtil.pageSize(pageable));
+            query.setParameter("page", DataUtils.pageSize(pageable));
             query.setParameter("size", pageable.getPageSize());
         }
 
@@ -67,15 +67,15 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         for (Object[] o : result) {
             int i = 0;
             UserResponse userResponse = new UserResponse();
-            userResponse.setId(DataUtil.safeToLong(o[i++]));
-            userResponse.setAddress(DataUtil.safeToString(o[i++]));
-            userResponse.setAvatar(DataUtil.safeToString(o[i++]));
-            userResponse.setDateOfBirth(DataUtil.safeToLocalDate(o[i++]));
-            userResponse.setEmail(DataUtil.safeToString(o[i++]));
-            userResponse.setFullName(DataUtil.safeToString(o[i++]));
-            userResponse.setPhone(DataUtil.safeToString(o[i++]));
-            userResponse.setUserName(DataUtil.safeToString(o[i++]));
-            userResponse.setRoleName(DataUtil.safeToListString(o[i++]));
+            userResponse.setId(DataUtils.safeToLong(o[i++]));
+            userResponse.setAddress(DataUtils.safeToString(o[i++]));
+            userResponse.setAvatar(DataUtils.safeToString(o[i++]));
+            userResponse.setDateOfBirth(DataUtils.safeToLocalDate(o[i++]));
+            userResponse.setEmail(DataUtils.safeToString(o[i++]));
+            userResponse.setFullName(DataUtils.safeToString(o[i++]));
+            userResponse.setPhone(DataUtils.safeToString(o[i++]));
+            userResponse.setUserName(DataUtils.safeToString(o[i++]));
+            userResponse.setRoleName(DataUtils.safeToListString(o[i++]));
 //            userResponse.setTotalCount(DataUtil.safeToInt(o[i]));
 
             userResponses.add(userResponse);
@@ -91,23 +91,23 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         StringBuilder sql = new StringBuilder();
         sql.append(SELECT_USER_WITH_ROLE);
 
-        if (!DataUtil.isNullOrEmpty(filter.getUserName())) {
+        if (!DataUtils.isNullOrEmpty(filter.getUserName())) {
             sql.append(" AND lower(u.user_name) LIKE lower(:userName) ");
         }
-        if (!DataUtil.isNullOrEmpty(filter.getAddress())) {
+        if (!DataUtils.isNullOrEmpty(filter.getAddress())) {
             sql.append(" AND lower(u.address) LIKE lower(:address) ");
         }
-        if (!DataUtil.isNullOrEmpty(filter.getEmail())) {
+        if (!DataUtils.isNullOrEmpty(filter.getEmail())) {
             sql.append(" AND lower(u.email) LIKE lower(:email) ");
         }
-        if (!DataUtil.isNullOrEmpty(filter.getDateOfBirthFrom())) {
+        if (!DataUtils.isNullOrEmpty(filter.getDateOfBirthFrom())) {
             sql.append(" AND q.date_of_birth >= :dateOfBirthFrom ");
         }
-        if (!DataUtil.isNullOrEmpty(filter.getDateOfBirthTo())) {
+        if (!DataUtils.isNullOrEmpty(filter.getDateOfBirthTo())) {
             sql.append(" AND u.date_of_birth < DATE_ADD(:dateOfBirthTo, INTERVAL 1 DAY) ");
         }
 
-        if (!DataUtil.isNullOrEmpty(filter.getRoleId())) {
+        if (!DataUtils.isNullOrEmpty(filter.getRoleId())) {
             sql.append(" AND r.id in (:roleId) ");
         }
 
@@ -119,30 +119,30 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 
         Query query = entityManager.createNativeQuery(sql.toString());
 
-        if (!DataUtil.isNullOrEmpty(filter.getUserName())) {
+        if (!DataUtils.isNullOrEmpty(filter.getUserName())) {
             query.setParameter("userName", "%" + filter.getUserName() + "%");
         }
 
-        if (!DataUtil.isNullOrEmpty(filter.getAddress())) {
+        if (!DataUtils.isNullOrEmpty(filter.getAddress())) {
             query.setParameter("address", "%" + filter.getAddress() + "%");
         }
 
-        if (!DataUtil.isNullOrEmpty(filter.getEmail())) {
+        if (!DataUtils.isNullOrEmpty(filter.getEmail())) {
             query.setParameter("email", "%" + filter.getEmail() + "%");
         }
 
-        if (!DataUtil.isNullOrEmpty(filter.getDateOfBirthFrom())) {
+        if (!DataUtils.isNullOrEmpty(filter.getDateOfBirthFrom())) {
             query.setParameter("dateOfBirthFrom", filter.getDateOfBirthFrom());
         }
-        if (!DataUtil.isNullOrEmpty(filter.getDateOfBirthTo())) {
+        if (!DataUtils.isNullOrEmpty(filter.getDateOfBirthTo())) {
             query.setParameter("dateOfBirthTo", filter.getDateOfBirthTo());
         }
-        if (!DataUtil.isNullOrEmpty(filter.getRoleId())) {
+        if (!DataUtils.isNullOrEmpty(filter.getRoleId())) {
             query.setParameter("roleId", filter.getRoleId());
         }
 
         if (pageable != null) {
-            query.setParameter("page", DataUtil.pageSize(pageable));
+            query.setParameter("page", DataUtils.pageSize(pageable));
             query.setParameter("size", pageable.getPageSize());
         }
 
@@ -151,16 +151,16 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         for (Object[] o : result) {
             int i = 0;
             UserResponse userResponse = new UserResponse();
-            userResponse.setId(DataUtil.safeToLong(o[i++]));
-            userResponse.setAddress(DataUtil.safeToString(o[i++]));
-            userResponse.setAvatar(DataUtil.safeToString(o[i++]));
-            userResponse.setDateOfBirth(DataUtil.safeToLocalDate(o[i++]));
-            userResponse.setEmail(DataUtil.safeToString(o[i++]));
-            userResponse.setFullName(DataUtil.safeToString(o[i++]));
-            userResponse.setPhone(DataUtil.safeToString(o[i++]));
-            userResponse.setUserName(DataUtil.safeToString(o[i++]));
-            userResponse.setRoleName(DataUtil.safeToListString(o[i++]));
-            userResponse.setTotalCount(DataUtil.safeToInt(o[i]));
+            userResponse.setId(DataUtils.safeToLong(o[i++]));
+            userResponse.setAddress(DataUtils.safeToString(o[i++]));
+            userResponse.setAvatar(DataUtils.safeToString(o[i++]));
+            userResponse.setDateOfBirth(DataUtils.safeToLocalDate(o[i++]));
+            userResponse.setEmail(DataUtils.safeToString(o[i++]));
+            userResponse.setFullName(DataUtils.safeToString(o[i++]));
+            userResponse.setPhone(DataUtils.safeToString(o[i++]));
+            userResponse.setUserName(DataUtils.safeToString(o[i++]));
+            userResponse.setRoleName(DataUtils.safeToListString(o[i++]));
+            userResponse.setTotalCount(DataUtils.safeToInt(o[i]));
 
             userResponses.add(userResponse);
         }

@@ -16,7 +16,7 @@ import java.util.*;
  * @project source-base
  */
 @Slf4j
-public class DataUtil {
+public class DataUtils {
 
     public static Integer pageSize(Pageable pageable) {
         return (pageable.getPageNumber()) * pageable.getPageSize();
