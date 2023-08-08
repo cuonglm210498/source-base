@@ -4,7 +4,7 @@ import com.lecuong.sourcebase.entity.AttachFile;
 import com.lecuong.sourcebase.exception.BusinessException;
 import com.lecuong.sourcebase.exception.StatusTemplate;
 import com.lecuong.sourcebase.modal.request.attachfile.AttachFileRequest;
-import com.lecuong.sourcebase.modal.response.AttachFileResponse;
+import com.lecuong.sourcebase.modal.response.attachfile.AttachFileResponse;
 import com.lecuong.sourcebase.repository.AttachFileRepository;
 import com.lecuong.sourcebase.service.AttachFileService;
 import io.minio.*;

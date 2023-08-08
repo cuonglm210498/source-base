@@ -1,7 +1,7 @@
 package com.lecuong.sourcebase.service;
 
 import com.lecuong.sourcebase.modal.request.employee.EmployeeRequest;
-import com.lecuong.sourcebase.modal.response.EmployeeResponse;
+import com.lecuong.sourcebase.modal.response.employee.EmployeeResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

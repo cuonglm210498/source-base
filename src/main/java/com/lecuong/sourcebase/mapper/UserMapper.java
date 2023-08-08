@@ -1,10 +1,9 @@
 package com.lecuong.sourcebase.mapper;
 
-import com.lecuong.sourcebase.entity.Blog;
 import com.lecuong.sourcebase.entity.Role;
 import com.lecuong.sourcebase.entity.User;
 import com.lecuong.sourcebase.modal.request.user.UserSaveRequest;
-import com.lecuong.sourcebase.modal.response.UserResponse;
+import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import com.lecuong.sourcebase.repository.RoleRepository;
 import com.lecuong.sourcebase.util.AlgorithmSha;
 import com.lecuong.sourcebase.util.BeanUtils;

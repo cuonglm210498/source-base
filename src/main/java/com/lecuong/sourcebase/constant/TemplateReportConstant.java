@@ -7,5 +7,5 @@ package com.lecuong.sourcebase.constant;
  */
 public class TemplateReportConstant {
 
-    public static final String AUTHOR_REPORT_TEMPLATE = "report/UserReport.xlsx";
+    public static final String AUTHOR_REPORT_TEMPLATE = "report/author_report.xlsx";
 }

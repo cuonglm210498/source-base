@@ -1,7 +1,7 @@
 package com.lecuong.sourcebase.service;
 
 import com.lecuong.sourcebase.modal.request.attachfile.AttachFileRequest;
-import com.lecuong.sourcebase.modal.response.AttachFileResponse;
+import com.lecuong.sourcebase.modal.response.attachfile.AttachFileResponse;
 
 import java.util.List;
 

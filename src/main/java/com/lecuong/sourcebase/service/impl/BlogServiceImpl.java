@@ -3,7 +3,7 @@ package com.lecuong.sourcebase.service.impl;
 import com.lecuong.sourcebase.entity.Blog;
 import com.lecuong.sourcebase.mapper.BlogMapper;
 import com.lecuong.sourcebase.modal.request.blog.BlogFilterRequest;
-import com.lecuong.sourcebase.modal.response.BlogResponse;
+import com.lecuong.sourcebase.modal.response.blog.BlogResponse;
 import com.lecuong.sourcebase.repository.BlogRepository;
 import com.lecuong.sourcebase.service.BlogService;
 import com.lecuong.sourcebase.specification.BlogSpecification;

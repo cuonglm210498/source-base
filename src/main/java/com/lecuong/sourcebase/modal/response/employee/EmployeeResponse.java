@@ -1,4 +1,4 @@
-package com.lecuong.sourcebase.modal.response;
+package com.lecuong.sourcebase.modal.response.employee;
 
 import com.lecuong.sourcebase.constant.PositionEnum;
 import lombok.Data;

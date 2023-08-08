@@ -2,7 +2,7 @@ package com.lecuong.sourcebase.mapper;
 
 import com.lecuong.sourcebase.entity.Blog;
 import com.lecuong.sourcebase.modal.request.blog.BlogSaveRequest;
-import com.lecuong.sourcebase.modal.response.BlogResponse;
+import com.lecuong.sourcebase.modal.response.blog.BlogResponse;
 import com.lecuong.sourcebase.repository.CategoryRespository;
 import com.lecuong.sourcebase.repository.UserRepository;
 import com.lecuong.sourcebase.util.BeanUtils;

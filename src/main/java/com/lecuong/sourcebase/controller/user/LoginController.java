@@ -2,7 +2,7 @@ package com.lecuong.sourcebase.controller.user;
 
 import com.lecuong.sourcebase.modal.request.user.UserAuthRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
-import com.lecuong.sourcebase.modal.response.UserResponse;
+import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import com.lecuong.sourcebase.security.jwt.TokenProducer;
 import com.lecuong.sourcebase.security.jwt.model.JwtPayLoad;
 import com.lecuong.sourcebase.service.UserService;

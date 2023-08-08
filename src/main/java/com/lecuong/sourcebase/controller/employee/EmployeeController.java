@@ -2,7 +2,7 @@ package com.lecuong.sourcebase.controller.employee;
 
 import com.lecuong.sourcebase.modal.request.employee.EmployeeRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
-import com.lecuong.sourcebase.modal.response.EmployeeResponse;
+import com.lecuong.sourcebase.modal.response.employee.EmployeeResponse;
 import com.lecuong.sourcebase.service.EmployeeService;
 import lombok.Data;
 import org.springframework.data.domain.Page;

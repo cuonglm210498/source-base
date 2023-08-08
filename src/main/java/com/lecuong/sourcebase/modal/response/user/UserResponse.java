@@ -1,4 +1,4 @@
-package com.lecuong.sourcebase.modal.response;
+package com.lecuong.sourcebase.modal.response.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lecuong.sourcebase.common.DateTimeCommon;

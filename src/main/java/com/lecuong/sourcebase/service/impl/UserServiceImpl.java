@@ -9,7 +9,7 @@ import com.lecuong.sourcebase.exception.StatusResponse;
 import com.lecuong.sourcebase.exception.StatusTemplate;
 import com.lecuong.sourcebase.mapper.UserMapper;
 import com.lecuong.sourcebase.modal.request.user.*;
-import com.lecuong.sourcebase.modal.response.UserResponse;
+import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import com.lecuong.sourcebase.repository.UserRepository;
 import com.lecuong.sourcebase.service.UserService;
 import com.lecuong.sourcebase.specification.UserSpecification;

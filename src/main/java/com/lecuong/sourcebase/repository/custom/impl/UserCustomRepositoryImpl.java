@@ -1,7 +1,7 @@
 package com.lecuong.sourcebase.repository.custom.impl;
 
 import com.lecuong.sourcebase.modal.request.user.UserFilterRequest;
-import com.lecuong.sourcebase.modal.response.UserResponse;
+import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import com.lecuong.sourcebase.repository.custom.UserCustomRepository;
 import com.lecuong.sourcebase.util.DataUtil;
 import org.springframework.data.domain.Page;

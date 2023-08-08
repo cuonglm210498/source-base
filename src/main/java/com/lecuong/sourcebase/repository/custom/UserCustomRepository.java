@@ -1,7 +1,7 @@
 package com.lecuong.sourcebase.repository.custom;
 
 import com.lecuong.sourcebase.modal.request.user.UserFilterRequest;
-import com.lecuong.sourcebase.modal.response.UserResponse;
+import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
  */
 public class BaseController {
 
-    public <T> ResponseEntity<BaseResponse<T>> success(T data) {
-        return ResponseEntity.ok(BaseResponse.ofSuccess(data));
+    public <T> ResponseEntity<T> success(T data) {
+        return ResponseEntity.ok(data);
     }
 
     public ResponseEntity<InputStreamResource> downloadFile(String fileName, InputStreamResource input) {

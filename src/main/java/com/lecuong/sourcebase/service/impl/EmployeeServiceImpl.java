@@ -5,7 +5,7 @@ import com.lecuong.sourcebase.exception.BusinessException;
 import com.lecuong.sourcebase.exception.StatusTemplate;
 import com.lecuong.sourcebase.mapper.EmployeeMapper;
 import com.lecuong.sourcebase.modal.request.employee.EmployeeRequest;
-import com.lecuong.sourcebase.modal.response.EmployeeResponse;
+import com.lecuong.sourcebase.modal.response.employee.EmployeeResponse;
 import com.lecuong.sourcebase.repository.EmployeeRepository;
 import com.lecuong.sourcebase.service.EmployeeService;
 import lombok.Data;

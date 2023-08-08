@@ -1,4 +1,4 @@
-package com.lecuong.sourcebase.modal.response;
+package com.lecuong.sourcebase.modal.response.attachfile;
 
 import lombok.Data;
 

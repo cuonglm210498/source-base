@@ -8,7 +8,7 @@ import com.lecuong.sourcebase.modal.request.user.UserFilterWithListBlogRequest;
 import com.lecuong.sourcebase.modal.request.user.UserSaveRequest;
 import com.lecuong.sourcebase.modal.request.user.UserUpdateRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
-import com.lecuong.sourcebase.modal.response.UserResponse;
+import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import com.lecuong.sourcebase.service.ReportService;
 import com.lecuong.sourcebase.service.UserService;
 import lombok.Data;
@@ -77,19 +77,5 @@ public class UserController extends BaseController {
     @PostMapping("/message")
     public ResponseEntity<BaseResponse<String>> getMessage(@RequestBody UserSaveRequest userRequest) {
         return ResponseEntity.ok(BaseResponse.ofSuccess(userService.getMessage(userRequest)));
-    }
-
-    @GetMapping("/export-excel")
-    public ResponseEntity<InputStreamResource> exportExcel() {
-        String fileName = String.format(FILE_NAME, new SimpleDateFormat(DateTimeCommon.DateTimeFormat.DD_MM_YY).format(new Date()));
-
-        var data = new HashMap<String, Object>();
-        List<UserResponse> responses = userService.getAll();
-        data.put("data", responses);
-
-        return downloadFile(
-                fileName,
-                reportService.toInputStreamResource(reportService.genXlsxLocal(data, TemplateReportConstant.AUTHOR_REPORT_TEMPLATE))
-        );
     }
 }

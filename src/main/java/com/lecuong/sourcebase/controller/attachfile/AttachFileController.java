@@ -1,7 +1,7 @@
 package com.lecuong.sourcebase.controller.attachfile;
 
 import com.lecuong.sourcebase.modal.request.attachfile.AttachFileRequest;
-import com.lecuong.sourcebase.modal.response.AttachFileResponse;
+import com.lecuong.sourcebase.modal.response.attachfile.AttachFileResponse;
 import com.lecuong.sourcebase.service.AttachFileService;
 import lombok.Data;
 import org.springframework.core.io.InputStreamResource;

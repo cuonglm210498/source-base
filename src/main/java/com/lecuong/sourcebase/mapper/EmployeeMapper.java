@@ -2,7 +2,7 @@ package com.lecuong.sourcebase.mapper;
 
 import com.lecuong.sourcebase.entity.Employee;
 import com.lecuong.sourcebase.modal.request.employee.EmployeeRequest;
-import com.lecuong.sourcebase.modal.response.EmployeeResponse;
+import com.lecuong.sourcebase.modal.response.employee.EmployeeResponse;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
