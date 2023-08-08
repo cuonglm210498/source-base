@@ -32,6 +32,22 @@ public class AuthorController extends BaseController {
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody AuthorSaveRequest request) {
+        /**
+         * {
+         *     "name":"a",
+         *     "address":"HN",
+         *     "books": [
+         *         {
+         *             "name":"book1",
+         *             "content":"a"
+         *         },
+         *         {
+         *             "name":"book2",
+         *             "content":"b"
+         *         }
+         *     ]
+         * }
+         */
         authorService.save(request);
         return success(null);
     }
