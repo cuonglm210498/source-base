@@ -67,4 +67,10 @@ public interface StatusTemplate {
             new StatusResponse("SHOP-FILE-NOT-FOUND", "File not found", HttpStatus.NOT_FOUND);
     StatusResponse FILE_MANIPULATION_FAILED =
             new StatusResponse("SHOP-FILE-MANIPULATION-FAILED", "File manipulation failed", HttpStatus.BAD_REQUEST);
+
+    /**
+     * INTERNAL SERVER ERROR
+     */
+    StatusResponse REST_API_CALL =
+            new StatusResponse("SHOP-REST_API_CALL", "Unable api call", HttpStatus.INTERNAL_SERVER_ERROR);
 }
