@@ -26,6 +26,9 @@ public class RestApiUtils {
 
     private final RestTemplate restTemplate;
 
+    /**
+     * call api with nobody in request
+     */
     public <T> T callRestApi(final String path, final HttpMethod method, Class<T> clazz) {
         try {
             var response = restTemplate.exchange(
@@ -42,6 +45,9 @@ public class RestApiUtils {
         }
     }
 
+    /**
+     * call api with body in request
+     */
     public <T> T callRestApi(final String path, final HttpMethod method, Object request, Class<T> clazz) {
         try {
             var response = restTemplate.exchange(
@@ -58,6 +64,9 @@ public class RestApiUtils {
         }
     }
 
+    /**
+     * call api with nobody and token in request
+     */
     public <T> T callRestApiWithToken(final String path, final HttpMethod method, Object request, Class<T> clazz) {
         try {
             var response = restTemplate.exchange(
