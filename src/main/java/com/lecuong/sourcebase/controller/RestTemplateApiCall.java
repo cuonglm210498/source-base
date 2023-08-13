@@ -47,7 +47,6 @@ public class RestTemplateApiCall {
     @GetMapping("/call-no-params")
     public ResponseEntity<?> getDataFromApi() {
 
-//        String response = restApiUtils.callRestApi(builder.toUriString(), HttpMethod.GET, String.class);
         String response = restApiUtils.callRestApi(URL, HttpMethod.GET, String.class);
 
         return ResponseEntity.ok(response);
