@@ -73,4 +73,11 @@ public interface StatusTemplate {
      */
     StatusResponse REST_API_CALL =
             new StatusResponse("SHOP-REST_API_CALL", "Unable api call", HttpStatus.INTERNAL_SERVER_ERROR);
+
+    StatusResponse FILE_INVALID =
+            new StatusResponse(
+                    "WORK-INVALID-FILE",
+                    "File không đúng mẫu cho phép. Vui lòng kiểm tra lại file hoặc tải file mẫu về tham khảo.",
+                    HttpStatus.INTERNAL_SERVER_ERROR) {
+            };
 }
