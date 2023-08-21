@@ -48,7 +48,6 @@ public class CertificateServiceImpl implements CertificateService {
 
         validateFileTemplate(sheet);
 
-        var rows = sheet.rowIterator();
         Row headerRow = sheet.getRow(3);
         var errorHeaderCell = headerRow.createCell(Constant.CertificateConstant.RESULT_COLUMN);
         errorHeaderCell.setCellValue(Constant.CertificateConstant.RESULT_COLUMN_NAME);
@@ -57,7 +56,6 @@ public class CertificateServiceImpl implements CertificateService {
         List<Certificate> certificates = new ArrayList<>();
 
         int lastRowNum = sheet.getLastRowNum();
-        int columnCount = headerRow.getLastCellNum();
 
         for (int i = 5; i <= lastRowNum; i++) { // Bắt đầu từ dòng thứ 6 (bỏ qua header)
             Row dataRow = sheet.getRow(i);
