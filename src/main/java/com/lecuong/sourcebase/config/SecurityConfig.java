@@ -51,6 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/employee/**")
                 .permitAll()
+                .antMatchers(HttpMethod.POST, "/api-key")
+                .permitAll()
                 .and()
                 .headers()
                 .cacheControl();

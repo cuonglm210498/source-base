@@ -43,4 +43,12 @@ public class Constant {
         public static final int RESULT_COLUMN = 9;
         public static final String RESULT_COLUMN_NAME = "Lỗi";
     }
+
+    public static class ApiKey {
+        private ApiKey() {}
+
+        public static final String API_KEY_HEADER = "X-API-KEY";
+        public static final String VALID_API_KEY = "8afd3bfb-imce-8814-vauy-7148f81647ca";
+
+    }
 }

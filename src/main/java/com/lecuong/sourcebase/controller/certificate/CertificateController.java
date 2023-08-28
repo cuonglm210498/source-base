@@ -1,4 +1,4 @@
-package com.lecuong.sourcebase.controller;
+package com.lecuong.sourcebase.controller.certificate;
 
 import com.lecuong.sourcebase.modal.response.BaseResponse;
 import com.lecuong.sourcebase.service.CertificateService;

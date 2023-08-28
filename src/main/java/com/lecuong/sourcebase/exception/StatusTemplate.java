@@ -80,4 +80,8 @@ public interface StatusTemplate {
                     "File không đúng mẫu cho phép. Vui lòng kiểm tra lại file hoặc tải file mẫu về tham khảo.",
                     HttpStatus.INTERNAL_SERVER_ERROR) {
             };
+
+    StatusResponse INVALID_API_KEY =
+            new StatusResponse("WORK-INVALID-API-KEY", "Invalid API key", HttpStatus.INTERNAL_SERVER_ERROR);
+
 }
