@@ -1,4 +1,4 @@
-package com.lecuong.sourcebase.service;
+package com.lecuong.sourcebase.service.httplog;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

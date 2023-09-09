@@ -1,6 +1,6 @@
 package com.lecuong.sourcebase.interceptor;
 
-import com.lecuong.sourcebase.service.HttpLoggingService;
+import com.lecuong.sourcebase.service.httplog.HttpLoggingService;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;

@@ -1,8 +1,7 @@
-package com.lecuong.sourcebase.service.impl;
+package com.lecuong.sourcebase.service.httplog;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lecuong.sourcebase.service.HttpLoggingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
