@@ -51,4 +51,10 @@ public class Constant {
         public static final String VALID_API_KEY = "8afd3bfb-imce-8814-vauy-7148f81647ca";
 
     }
+
+    public static class RabbitMQQueue {
+        private RabbitMQQueue() {}
+
+        public static final String NOTIFICATION_QUEUE_NAME = "queue.notification";
+    }
 }

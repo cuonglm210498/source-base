@@ -63,7 +63,7 @@
             <version>1.58</version>
         </dependency>
 
-        <!--        Config Swagger-->
+        <!-- Config Swagger-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -75,6 +75,7 @@
             <version>2.9.2</version>
         </dependency>
 
+        <!--ModelMapper-->
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
@@ -93,19 +94,19 @@
             <version>8.4.3</version>
         </dependency>
 
+        <!--Kafka-->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
             <version>2.8.0</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
         </dependency>
 
+        <!--jxls export excel-->
         <dependency>
             <groupId>org.jxls</groupId>
             <artifactId>jxls</artifactId>
@@ -122,6 +123,18 @@
             <groupId>com.twilio.sdk</groupId>
             <artifactId>twilio</artifactId>
             <version>8.25.0</version> <!-- Sử dụng phiên bản mới nhất -->
+        </dependency>
+
+        <!--RabbitMQ-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.free-now.multirabbit</groupId>
+            <artifactId>spring-multirabbit</artifactId>
+            <version>2.4.0</version>
         </dependency>
 
     </dependencies>

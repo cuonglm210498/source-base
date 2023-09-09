@@ -1,0 +1,181 @@
+1. Hướng dẫn cài đặt rabbitMQ trên docker:
+	+ docker pull rabbitmq:management
+	+ docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management (port 15672: port UI, port 5672: port connect app vs rabbitMQ)
+	+ docker start rabbitmq
+	+ docker stop rabbitmq
+	+ docker rm rabbitmq
+
+2. Hướng dẫn setup rabbitMQ trong dự án:
+- Thêm thư viện rabbitMQ:
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-amqp</artifactId>
+		<version>3.1.2</version>
+	</dependency>
+	<dependency>
+		<groupId>com.free-now.multirabbit</groupId>
+		<artifactId>spring-multirabbit</artifactId>
+		<version>2.4.0</version>
+	</dependency>
+	
+- Config trong file application.properties (tạo tài khoản admin trên UI của rabbitMQ):
+	spring.rabbitmq.host=localhost
+	spring.rabbitmq.port=5672
+	spring.rabbitmq.username=admin
+	spring.rabbitmq.password=admin
+
+- Tạo class ReceiveRabitMQConfig:
+	import com.fasterxml.jackson.databind.ObjectMapper;
+	import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+	import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
+	import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
+	import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+	import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
+	import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+	import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+	import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
+	
+	@Configuration
+	@EnableRabbit
+	public class ReceiveRabbitMQConfiguration implements RabbitListenerConfigurer {
+
+		@Override
+		public void configureRabbitListeners(RabbitListenerEndpointRegistrar rabbitListenerEndpointRegistrar) {
+			rabbitListenerEndpointRegistrar.setMessageHandlerMethodFactory(messageHandlerMethodFactory());
+		}
+
+		@Bean
+		public MappingJackson2MessageConverter getJackson2MessageConverter() {
+			MappingJackson2MessageConverter mappingJackson2MessageConverter = new MappingJackson2MessageConverter();
+			mappingJackson2MessageConverter.setObjectMapper(new ObjectMapper());
+			return mappingJackson2MessageConverter;
+		}
+
+		@Bean
+		public DefaultMessageHandlerMethodFactory messageHandlerMethodFactory() {
+			DefaultMessageHandlerMethodFactory factory = new DefaultMessageHandlerMethodFactory();
+			factory.setMessageConverter(getJackson2MessageConverter());
+			return factory;
+		}
+
+		@Bean(name = "rabbitListenerContainerFactory")
+		public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(
+				SimpleRabbitListenerContainerFactoryConfigurer configurer,
+				ConnectionFactory connectionFactory) {
+			SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+			configurer.configure(factory, connectionFactory);
+			return factory;
+		}
+	}
+	
+- Tạo class SendRabbitMQConfig:
+	import com.example.demo.constant.Constants;
+	import org.springframework.amqp.core.Queue;
+	import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+	import org.springframework.amqp.rabbit.core.RabbitTemplate;
+	import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+	
+	@Configuration
+	public class SendRabbitMQConfiguration {
+		@Bean
+		public Queue notificationQueue() {
+			//public static final String NOTIFICATION_QUEUE_NAME = "queue.test.notification";
+			return new Queue(Constants.Queue.NOTIFICATION_QUEUE_NAME, false);
+		}
+
+		@Bean
+		public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
+			final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+			rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
+			return rabbitTemplate;
+		}
+
+		@Bean
+		public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
+			return new Jackson2JsonMessageConverter();
+		}
+	}
+	
+- Tạo class NotificationRequest (để test việc gửi và nhận object trên rabbitMQ):
+	@Data
+	@ToString
+	public class NotificationRequest {
+
+		private String funcCode;
+		private String funcId;
+		private String funcName;
+		private String itemType;
+		private String item;
+		private String itemId;
+		private String action;
+		private String oldValue;
+		private String newValue;
+		private String receiver;
+		private String actionBy;
+		private String createdBy;
+		private String description;
+		private String tenantCode;
+	}
+	
+- Tạo class MessageSeriveImpl implements MessageService:
+	import com.example.demo.constant.Constants;
+	import com.example.demo.model.request.NotificationRequest;
+	import com.example.demo.service.MessageService;
+	import org.springframework.amqp.rabbit.core.RabbitTemplate;
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.stereotype.Service;
+
+	@Service
+	public class MessageServiceImpl implements MessageService {
+	
+		//public static final String NOTIFICATION_QUEUE_NAME = "queue.test.notification";
+
+		@Autowired
+		RabbitTemplate rabbitTemplate;
+
+		@Override
+		public void sendNotification(String actionCode, String functionCode, String functionId, String functionName, String user) {
+			NotificationRequest request = new NotificationRequest();
+			request.setAction(actionCode);
+			request.setFuncCode(functionCode);
+			request.setFuncId(functionId);
+			request.setFuncName(functionName);
+			request.setReceiver(user);
+			rabbitTemplate.convertAndSend(Constants.Queue.NOTIFICATION_QUEUE_NAME, request);
+		}
+	}
+	
+- Để test việc gửi nhận message:
+
++ Tạo class MessageController
+	@Data
+	@RestController
+	@RequestMapping("/rabbit-mq")
+	public class MessageController {
+
+		private final MessageService messageService;
+
+		@PostMapping("/send")
+		public ResponseEntity<BaseResponse<Void>> sendMessage() {
+			messageService.sendNotification("test", "done", "F01", "test", "CuongLM");
+			return ResponseEntity.ok(BaseResponse.ofSuccess(null));
+		}
+	}
+- Tạo class MessageListener:
+	import com.example.demo.constant.Constants;
+	import com.example.demo.model.request.NotificationRequest;
+	import org.springframework.amqp.rabbit.annotation.RabbitListener;
+	import org.springframework.stereotype.Component;
+	
+	@Component
+	public class MessageListener {
+
+		@RabbitListener(queues = Constants.Queue.NOTIFICATION_QUEUE_NAME)
+		public void handleNotificationMessage(NotificationRequest request) {
+			System.out.println(request);
+		}
+	}
