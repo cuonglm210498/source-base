@@ -3,10 +3,14 @@ package com.lecuong.sourcebase.config;
 import com.lecuong.sourcebase.security.jwt.TokenConsumer;
 import com.lecuong.sourcebase.security.jwt.TokenProducer;
 import com.lecuong.sourcebase.security.jwt.util.KeyReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -50,7 +54,9 @@ public class TokenManagerConfig {
 
     private TokenProducer createTokenProducer(float time) {
         try {
-            PrivateKey privateKey = KeyReader.getPrivateKey(privateKeyPath);
+            ResourceLoader resourceLoader = new DefaultResourceLoader();
+            Resource resource = resourceLoader.getResource(privateKeyPath);
+            PrivateKey privateKey = KeyReader.getPrivateKey(resource.getURL().getPath());
             return new TokenProducer(issuer, subject, audiences.stream().toArray(size -> new String[size]),
                     time, notBeforeInMin, privateKey);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
@@ -61,7 +67,9 @@ public class TokenManagerConfig {
     @Bean
     public TokenConsumer tokenConsumer() {
         try {
-            PublicKey publicKey = KeyReader.getPublicKey(publicKeyPath);
+            ResourceLoader resourceLoader = new DefaultResourceLoader();
+            Resource resource = resourceLoader.getResource(publicKeyPath);
+            PublicKey publicKey = KeyReader.getPublicKey(resource.getURL().getPath());
             return new TokenConsumer(audience, publicKey);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
             return null;
