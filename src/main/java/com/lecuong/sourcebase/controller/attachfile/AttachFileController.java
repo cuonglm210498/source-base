@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Data
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/attach-file")
 public class AttachFileController {
 
     private final AttachFileService attachFileService;

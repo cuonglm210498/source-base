@@ -81,6 +81,13 @@ public interface StatusTemplate {
                     HttpStatus.INTERNAL_SERVER_ERROR) {
             };
 
+    StatusResponse FILE_EXISTS =
+            new StatusResponse(
+                    "SHOP-FILE-EXISTS",
+                    "File contain in system",
+                    HttpStatus.INTERNAL_SERVER_ERROR) {
+            };
+
     StatusResponse INVALID_API_KEY =
             new StatusResponse("WORK-INVALID-API-KEY", "Invalid API key", HttpStatus.INTERNAL_SERVER_ERROR);
 

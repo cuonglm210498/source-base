@@ -117,13 +117,11 @@
             <version>2.12.0</version>
         </dependency>
 
-        <!--Twillio send OTP-->
         <dependency>
-            <groupId>com.twilio.sdk</groupId>
-            <artifactId>twilio</artifactId>
-            <version>8.25.0</version> <!-- Sử dụng phiên bản mới nhất -->
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version> <!-- Sử dụng phiên bản mới nhất của Commons Codec -->
         </dependency>
-
     </dependencies>
 
     <build>
