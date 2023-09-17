@@ -10,12 +10,9 @@ import com.lecuong.sourcebase.repository.FileRepository;
 import com.lecuong.sourcebase.service.FileService;
 import com.lecuong.sourcebase.util.FileUtils;
 import lombok.Data;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.http.entity.FileEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.Optional;
 
