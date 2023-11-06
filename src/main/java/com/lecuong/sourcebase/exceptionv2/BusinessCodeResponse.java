@@ -53,4 +53,12 @@ public interface BusinessCodeResponse {
             new ErrorCodeResponse("SHOP-VALIDATE-USER", "Email is invalid or contains blank", HttpStatus.BAD_REQUEST);
     ErrorCodeResponse PHONE_NUMBER_INVALIDATE =
             new ErrorCodeResponse("SHOP-VALIDATE-USER", "Phone number invalidate", HttpStatus.BAD_REQUEST);
+
+    /**
+     * Exception document
+     */
+    ErrorCodeResponse DOCUMENT_FILE_ERROR =
+            new ErrorCodeResponse("SHOP-GET-DOCUMENT", "Get document error", HttpStatus.BAD_REQUEST);
+    ErrorCodeResponse DOCUMENT_NOT_FOUND =
+            new ErrorCodeResponse("SHOP-DOCUMENT-NOT-FOUND", "Get document error", HttpStatus.BAD_REQUEST);
 }

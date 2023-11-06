@@ -1,0 +1,148 @@
+-- CONFIG-APPLICATION-PROPERTIES
+upload.path=/usr/share/java/upload
+spring.servlet.multipart.max-file-size=50MB
+spring.servlet.multipart.max-request-size=50MB
+spring.web.resources.static-locations=file:///${upload.path}
+
+-- DOCUMENT-ENTITY
+@NoArgsConstructor
+@Data
+@Entity
+@Table(name = "ew_document", schema = "member", catalog = "")
+@Where(clause = "is_deleted = 0")
+public class Document implements DeletableEntity {
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "ID")
+    private String id;
+    @Column(length = 100)
+    private String refId;
+    @Column(length = 250)
+    private String fileName;
+    @Column(length = 500)
+    private String filePath;
+    @Column(length = 100)
+    private String fileType;
+    private long fileSize;
+    private String tenantCode;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+    private String createdBy;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+    private String lastModifiedBy;
+    private Long isDeleted = 0L;
+    private Long version = 1L;
+}
+
+-- DOCUMENT-CONTROLLER
+@GetMapping("getFile")
+public ResponseEntity<Resource> getFile(@RequestParam String id) {
+	return documentService.getFile(id);
+}
+
+@PostMapping(value = "upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public Document upload(@RequestParam MultipartFile file) {
+	if (!documentService.upload(file))
+		throw new BusinessErrorException(documentService.getErrors());
+	return documentService.getDocument();
+}
+
+-- DOCUMENT-SERVICE
+ResponseEntity<Resource> getFile(String id);
+Boolean upload(MultipartFile file);
+
+-- DOCUMENT-SERVICE-IMPL
+@Override
+public ResponseEntity<Resource> getFile(String id) {
+	try {
+		Document document = documentRepository.findByRefId(id).orElse(null);
+		if (!H.isTrue(document)) {
+			return ResponseEntity.ok().build();
+		}
+		Path rootLocation = Paths.get(this.uploadPath + "/" + id);
+		Path file = rootLocation.resolve(document.getFileName());
+		Resource resource = new UrlResource(file.toUri());
+		if (resource.exists() || resource.isReadable()) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=" + document.getFileName());
+			headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+			headers.add("Pragma", "no-cache");
+			headers.add("Expires", "0");
+			return ResponseEntity.ok().headers(headers)
+					.contentLength(resource.getFile().length())
+					.contentType(MediaType.APPLICATION_OCTET_STREAM)
+					.body(resource);
+		}
+		else {
+			return ResponseEntity.ok().build();
+		}
+	}
+	catch (MalformedURLException e) {
+		return ResponseEntity.ok().build();
+	} catch (IOException e) {
+		return ResponseEntity.ok().build();
+	}
+}
+
+@Override
+public Boolean upload(MultipartFile file) {
+	document = new Document();
+	if (!validateCreate()) return false;
+	String refId = UUID.randomUUID().toString();
+	String fileName = file.getOriginalFilename();
+	document.setTenantCode(getTenantCode());
+	document.setRefId(refId);
+	document.setFileName(fileName);
+	document.setFilePath("/" + refId + "/" + fileName);
+	document.setFileType(file.getContentType());
+	document.setFileSize(file.getSize());
+	String tenantCode = getTenantCode();
+	document.setTenantCode(tenantCode);
+	String username = getUsername();
+	document.setCreatedBy(username);
+	document.setCreatedDate(new Date());
+	document.setLastModifiedBy(username);
+	document.setLastModifiedDate(new Date());
+	document.setVersion(1L);
+	save(document);
+	Path rootLocation = Paths.get(this.uploadPath + "/" + refId);
+	try {
+		Path destinationFile = rootLocation.resolve(
+						Paths.get(file.getOriginalFilename()))
+				.normalize().toAbsolutePath();
+		if (!destinationFile.getParent().equals(rootLocation.toAbsolutePath())) {
+			// This is a security check
+		}
+		File directory = new File(rootLocation.toString());
+		if (! directory.exists()){
+			directory.mkdir();
+		}
+		try (InputStream inputStream = file.getInputStream()) {
+			Files.copy(inputStream, destinationFile,
+					StandardCopyOption.REPLACE_EXISTING);
+		}
+	}
+	catch (IOException e) {
+		//
+	}
+	return true;
+}
+
+private boolean validateForDelete() {
+	return this.checkAdminRight();
+}
+
+private boolean validateCreate() {
+	return this.checkAdminRight();
+}
+
+private boolean validateUpdate() {
+	if (document == null) throw new ResourceNotFoundException();
+	return this.checkAdminRight();
+}
+
+private boolean checkAdminRight() {
+	return true;
+}
