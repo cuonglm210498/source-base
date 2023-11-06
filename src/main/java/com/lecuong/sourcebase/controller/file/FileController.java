@@ -27,6 +27,12 @@ import java.io.IOException;
 @RequestMapping("/file")
 public class FileController {
 
+    /**
+     * Gửi file lên server và nhận về base64 qua API send-file
+     * Gửi thông tin file qua API receive-file
+     * Lấy file theo Id
+     */
+
     @Autowired
     private FileService fileService;
 
