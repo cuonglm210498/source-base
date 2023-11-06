@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Arrays;
 
 /**
  * @author CuongLM
@@ -56,13 +56,10 @@ public class DocumentController {
     @GetMapping("view-file")
     public ResponseEntity<Resource> viewFile(@RequestParam String id) throws IOException {
         Resource resource = documentService.getFile(id);
-        byte[] bytes = resource.getInputStream().readAllBytes();
-        InputStream docxInputStream = resource.getInputStream();
-
-        String fileName = resource.getFilename();
+        String fileName = Arrays.asList(resource.getFile().getName().split("\\.")).get(0);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + "abc" + ".pdf");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileName + ".pdf");
         headers.setContentType(MediaType.APPLICATION_PDF);
         return ResponseEntity.ok()
                 .headers(headers)
