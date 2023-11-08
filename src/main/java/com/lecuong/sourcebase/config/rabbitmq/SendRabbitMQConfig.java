@@ -17,6 +17,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SendRabbitMQConfig {
 
+    /**
+     * Khi tạo queue mới hoặc kết nối đến một queue khác thì tạo bean cho queue đó tại đây
+     * VD:@Bean
+     *    public Queue emailQueue() {
+     *        return new Queue(Constant.RabbitMQQueue.EMAIL_QUEUE_NAME, false);
+     *    }
+     */
+
     @Bean
     public Queue notificationQueue() {
         return new Queue(Constant.RabbitMQQueue.NOTIFICATION_QUEUE_NAME, false);
