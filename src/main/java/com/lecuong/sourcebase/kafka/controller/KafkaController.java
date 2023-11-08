@@ -31,7 +31,7 @@ public class KafkaController {
         return ResponseEntity.ok("Message sent to Kafka");
     }
 
-    @KafkaListener(topics = "test", groupId = "group-id")
+//    @KafkaListener(topics = "test", groupId = "group-id")
     public void listen(String message) {
         log.info("Received Log History in group - group-id: " + message);
     }

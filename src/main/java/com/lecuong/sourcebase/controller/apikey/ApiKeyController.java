@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api-key")
 public class ApiKeyController {
 
+    /**
+     * Truy cập API thông qua ApiKey mà không phải thông qua token
+     */
+
     @PostMapping
     public ResponseEntity<BaseResponse<String>> test() {
         return ResponseEntity.ok(BaseResponse.ofSuccess("test"));

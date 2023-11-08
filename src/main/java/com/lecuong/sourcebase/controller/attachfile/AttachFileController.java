@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/attach-file")
 public class AttachFileController {
 
+    /**
+     * CRUD File với MinIO
+     */
+
     private final AttachFileService attachFileService;
 
     @PostMapping(value = "/upload")
