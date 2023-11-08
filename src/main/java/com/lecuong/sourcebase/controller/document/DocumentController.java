@@ -52,19 +52,4 @@ public class DocumentController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
-
-    @GetMapping("view-file")
-    public ResponseEntity<Resource> viewFile(@RequestParam String id) throws IOException {
-        Resource resource = documentService.getFile(id);
-        String fileName = Arrays.asList(resource.getFile().getName().split("\\.")).get(0);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileName + ".pdf");
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(resource.getFile().length())
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(resource);
-    }
 }
