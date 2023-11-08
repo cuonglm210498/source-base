@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ public class AuthorController extends BaseController {
     private final AuthorRepository repository;
     private final AuthorService authorService;
     private final String FILE_NAME = "author_report_%s.xlsx";
+    private final String FILE_NAME_TEMPLATE = "author_report.xlsx";
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody AuthorSaveRequest request) {
@@ -79,6 +81,20 @@ public class AuthorController extends BaseController {
         return downloadFile(
                 fileName,
                 reportService.toInputStreamResource(reportService.genXlsxLocal(data, TemplateReportConstant.AUTHOR_REPORT_TEMPLATE))
+        );
+    }
+
+    @GetMapping("/export-template")
+    public ResponseEntity<InputStreamResource> exportTemplate() {
+        var data = new HashMap<String, Object>();
+        data.put("data", new ArrayList<>());
+
+        return downloadFile(
+                FILE_NAME_TEMPLATE,
+                reportService.toInputStreamResource(
+                        reportService.genXlsxLocal(
+                                data,
+                                TemplateReportConstant.AUTHOR_IMPORT_TEMPLATE))
         );
     }
 }
