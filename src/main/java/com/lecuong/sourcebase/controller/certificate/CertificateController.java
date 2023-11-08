@@ -25,6 +25,10 @@ import java.io.InputStream;
 @RequestMapping("/certificate")
 public class CertificateController {
 
+    /**
+     * Import file excel có check lỗi, nếu lỗi trả về file lỗi
+     */
+
     private final CertificateService certificateService;
 
     @PostMapping("/import-excel")

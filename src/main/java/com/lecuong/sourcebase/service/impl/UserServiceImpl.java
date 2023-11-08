@@ -13,7 +13,7 @@ import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import com.lecuong.sourcebase.repository.UserRepository;
 import com.lecuong.sourcebase.service.UserService;
 import com.lecuong.sourcebase.specification.UserSpecification;
-import com.lecuong.sourcebase.util.AlgorithmSha;
+import com.lecuong.sourcebase.util.AlgorithmUtils;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse auth(UserAuthRequest userAuthRequest) {
-        String password = AlgorithmSha.hash(userAuthRequest.getPassword());
+        String password = AlgorithmUtils.hash(userAuthRequest.getPassword());
 
         Optional<User> user = userRepository.findByUserNameAndPassword(userAuthRequest.getUserName(), password);
 
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public void update(Long id, UserUpdateRequest userUpdateRequest) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            user.get().setPassword(AlgorithmSha.hash(userUpdateRequest.getPassword()));
+            user.get().setPassword(AlgorithmUtils.hash(userUpdateRequest.getPassword()));
             user.get().setEmail(userUpdateRequest.getEmail());
             user.get().setPhone(userUpdateRequest.getPhone());
             user.get().setAddress(userUpdateRequest.getAddress());

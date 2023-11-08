@@ -5,7 +5,7 @@ import com.lecuong.sourcebase.entity.User;
 import com.lecuong.sourcebase.modal.request.user.UserSaveRequest;
 import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import com.lecuong.sourcebase.repository.RoleRepository;
-import com.lecuong.sourcebase.util.AlgorithmSha;
+import com.lecuong.sourcebase.util.AlgorithmUtils;
 import com.lecuong.sourcebase.util.BeanUtils;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class UserMapper {
     public User to(UserSaveRequest userSaveRequest) {
         User user = new User();
         BeanUtils.refine(userSaveRequest, user, BeanUtils::copyNonNull);
-        user.setPassword(AlgorithmSha.hash(userSaveRequest.getPassword()));
+        user.setPassword(AlgorithmUtils.hash(userSaveRequest.getPassword()));
 
         Set<Role> roles = new HashSet<>(roleRepository.findByIdIn(userSaveRequest.getIds()));
         user.setRoles(roles);
