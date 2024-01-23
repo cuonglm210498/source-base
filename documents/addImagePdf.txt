@@ -1,0 +1,49 @@
+public byte[] addImageToPdf(InputStream file, byte[] imageData, ByteArrayOutputStream fileOutputStream, short page, Float x, Float y, Float w, Float h) {
+        // Creating a PdfWriter
+        try {
+            com.itextpdf.kernel.pdf.PdfReader reader = new com.itextpdf.kernel.pdf.PdfReader(file);
+            com.itextpdf.kernel.pdf.PdfWriter writer = new com.itextpdf.kernel.pdf.PdfWriter(fileOutputStream);
+
+            // Creating a PdfDocument
+            PdfDocument pdf = new PdfDocument(reader, writer);
+
+            // Creating a Document
+            Document document = new Document(pdf);
+
+            // Creating an ImageData object
+            ImageData data = ImageDataFactory.create(imageData);
+
+            // Creating an Image object
+            com.itextpdf.layout.element.Image image =
+                new com.itextpdf.layout.element.Image(data);
+//            if (w != null && h != null) {
+//                image.scaleToFit(w, h);
+//            }
+            float toYOld = Float.sum(y, h);
+            float toYNew = Float.sum(y, image.getImageHeight());
+            if (toYNew > toYOld) {
+                y = toYOld - image.getImageHeight();
+            }
+            image.setFixedPosition(page, x, y);
+
+            if (pdf.getPage(page).getRotation() != 0) {
+                image.setRotationAngle(Math.toRadians(90));
+            }
+            // Adding image to the document
+            document.add(image);
+
+            // Closing the document
+            document.close();
+            byte[] dataFileSign = fileOutputStream.toByteArray();
+
+            // giải phóng bộ nhớ
+            reader.close();
+            writer.close();
+            pdf.close();
+            fileOutputStream.close();
+            return dataFileSign;
+        } catch (Exception e) {
+            log.error("Thêm ảnh vào pdf thất bại ! {}",e);
+            throw new RuntimeException(e.getMessage());
+        }
+    }

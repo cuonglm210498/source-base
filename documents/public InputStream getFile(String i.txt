@@ -1,0 +1,26 @@
+    public InputStream getFile(String itemId, String format) throws Exception {
+        graphClient = this.buildGraphClient();
+        InputStream inputStream;
+        if (format == null || "".equals(format.trim())) {
+//            inputStream = graphClient.drive().items(itemId).content().buildRequest().get();
+            inputStream = graphClient.me().drive().items(itemId).content().buildRequest().get();
+        } else {
+            graphClient.getHttpProvider();
+            LinkedList<Option> requestOptions = new LinkedList<Option>();
+            requestOptions.add(new QueryOption("format", format));
+//            inputStream = graphClient.drive().items(itemId).content().buildRequest(requestOptions).get();
+            try {
+                inputStream = graphClient.me().drive().items(itemId).content().buildRequest(requestOptions).get();
+            } catch (Exception e) {
+                log.error("{}", e);
+
+                // TH nếu graphAPI convert sang PDF lỗi ->
+                inputStream = graphClient.me().drive().items(itemId).content().buildRequest().get();
+//                InputStream resultPDFFile = convertDocToPDFDOCX4J(inputStream);
+//                return resultPDFFile;
+                InputStream resultPDFFile = fileUtils.convertDocToPDFDOCX4J(inputStream);
+                return resultPDFFile;
+            }
+        }
+        return inputStream;
+    }
