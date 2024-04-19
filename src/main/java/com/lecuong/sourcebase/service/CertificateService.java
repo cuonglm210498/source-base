@@ -1,5 +1,6 @@
 package com.lecuong.sourcebase.service;
 
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -12,4 +13,6 @@ import java.io.IOException;
 public interface CertificateService {
 
     Object importExcel(MultipartFile file) throws IOException;
+
+    Resource getTemplate() throws IOException;
 }
