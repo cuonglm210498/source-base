@@ -11,6 +11,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends BaseRepository<User, Long>, UserCustomRepository {
 
+    User findByUserName(String userName);
+
     Optional<User> findByUserNameAndPassword(String userName, String password);
 
     @Modifying

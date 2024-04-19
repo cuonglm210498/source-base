@@ -8,6 +8,8 @@ import com.lecuong.sourcebase.repository.RoleRepository;
 import com.lecuong.sourcebase.util.AlgorithmUtils;
 import com.lecuong.sourcebase.util.BeanUtils;
 import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -20,11 +22,12 @@ import java.util.stream.Collectors;
 public class UserMapper {
 
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User to(UserSaveRequest userSaveRequest) {
         User user = new User();
         BeanUtils.refine(userSaveRequest, user, BeanUtils::copyNonNull);
-        user.setPassword(AlgorithmUtils.hash(userSaveRequest.getPassword()));
+        user.setPassword(passwordEncoder.encode(userSaveRequest.getPassword()));
 
         Set<Role> roles = new HashSet<>(roleRepository.findByIdIn(userSaveRequest.getIds()));
         user.setRoles(roles);

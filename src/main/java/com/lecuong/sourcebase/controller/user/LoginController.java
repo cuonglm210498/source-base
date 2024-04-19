@@ -2,48 +2,39 @@ package com.lecuong.sourcebase.controller.user;
 
 import com.lecuong.sourcebase.modal.request.user.UserAuthRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
-import com.lecuong.sourcebase.modal.response.user.UserResponse;
-import com.lecuong.sourcebase.security.jwt.TokenProducer;
-import com.lecuong.sourcebase.security.jwt.model.JwtPayLoad;
-import com.lecuong.sourcebase.service.UserService;
-import com.lecuong.sourcebase.validate.UserValidator;
-import lombok.Data;
+import com.lecuong.sourcebase.security.UserDetailsImpl;
+import com.lecuong.sourcebase.security.jwt.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Data
 @RestController
 @RequestMapping("/api/v1/user/login")
 public class LoginController {
 
-    private final UserValidator userValidator;
-    private final UserService userService;
-    private final TokenProducer tokenProducer;
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
     @PostMapping
-    public ResponseEntity<BaseResponse<String>> login(@RequestBody UserAuthRequest userAuthRequest) {
-
-        //Validate userAuthRequest
-//        userValidator.validateUserAuthRequest(userAuthRequest);
-
-        UserResponse userResponse = userService.auth(userAuthRequest);
-        JwtPayLoad jwtPayload = createPayload(userResponse);
-        String token = tokenProducer.token(jwtPayload);
-        return ResponseEntity.ok(BaseResponse.ofSuccess(token));
+    public ResponseEntity<BaseResponse<String>> login(@RequestBody UserAuthRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUserName(),
+                        loginRequest.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = tokenProvider.generateToken((UserDetailsImpl) authentication.getPrincipal());
+        return ResponseEntity.ok(BaseResponse.ofSuccess(jwt));
     }
-
-    private JwtPayLoad createPayload(UserResponse userResponse){
-        JwtPayLoad jwtPayload = new JwtPayLoad();
-        jwtPayload.setUserName(userResponse.getUserName());
-        jwtPayload.setId(userResponse.getId());
-        //String role = user.getRoles().stream().map(Role::getName).collect(Collectors.joining(","));
-        String role = String.join(",", userResponse.getRoleName());
-        jwtPayload.setRole(role);
-
-        return jwtPayload;
-    }
-
 }

@@ -21,6 +21,8 @@ public interface StatusTemplate {
             new StatusResponse("SHOP-TOKEN-EXPIRED", "token expired", HttpStatus.UNAUTHORIZED);
     StatusResponse TOKEN_IN_VALID =
             new StatusResponse("SHOP-TOKEN-INVALID", "token invalid", HttpStatus.UNAUTHORIZED);
+    StatusResponse TOKEN =
+            new StatusResponse("SHOP-TOKEN", "Token expired, Token invalid, Unsupported JWT token, JWT claims string is empty", HttpStatus.UNAUTHORIZED);
 
     /**
      * Exception user

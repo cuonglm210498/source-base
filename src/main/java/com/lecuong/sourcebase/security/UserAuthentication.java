@@ -2,15 +2,16 @@ package com.lecuong.sourcebase.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 
 public class UserAuthentication implements Authentication {
 
-    private UserDetails user;
+    private UserDetailsImpl user;
 
-    public UserAuthentication(UserDetails user) {
+    public UserAuthentication(UserDetailsImpl user) {
         this.user = user;
     }
 

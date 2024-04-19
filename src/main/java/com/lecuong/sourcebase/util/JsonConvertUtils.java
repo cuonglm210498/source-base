@@ -61,4 +61,9 @@ public class JsonConvertUtils {
         Gson gson = new Gson();
         return gson.fromJson(json, arrayClass);
     }
+
+    public static <T> T hashToObject(Object json, Class<T> elementClass) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.convertValue(json, elementClass);
+    }
 }
