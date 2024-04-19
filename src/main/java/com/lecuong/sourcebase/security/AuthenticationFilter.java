@@ -5,6 +5,7 @@ import com.lecuong.sourcebase.exception.StatusTemplate;
 import com.lecuong.sourcebase.exception.BusinessException;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
 import org.jose4j.jwt.consumer.InvalidJwtException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +21,7 @@ import java.io.IOException;
 
 public class AuthenticationFilter extends GenericFilterBean {
 
-    private static final String AUTH_HEADER_NAME = "Bear";
+    private static final String PREFIX = "Bear ";
     private final TokenAuthenticator authenticator;
     private ObjectMapper mapper;
 
@@ -32,7 +33,11 @@ public class AuthenticationFilter extends GenericFilterBean {
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         Authentication userAuth;
-        String token = ((HttpServletRequest) req).getHeader(AUTH_HEADER_NAME);
+        String token = ((HttpServletRequest) req).getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (token != null && token.startsWith(PREFIX)) {
+            token = token.replace(PREFIX, "");
+        }
 
         try {
             userAuth = this.authenticator.getAuthentication(token);
