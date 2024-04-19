@@ -108,8 +108,8 @@ public class RestApiUtils {
 
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes)requestAttributes).getRequest();
-        String token = ((HttpServletRequest) request).getHeader("X-AUTH-TOKEN");
-        headers.add(X_AUTH_TOKEN, token);
+        String token = ((HttpServletRequest) request).getHeader(HttpHeaders.AUTHORIZATION);
+        headers.add(HttpHeaders.AUTHORIZATION, BEARER + token);
 
         return headers;
     }
