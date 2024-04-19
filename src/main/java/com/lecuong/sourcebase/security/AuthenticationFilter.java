@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class AuthenticationFilter extends GenericFilterBean {
 
-    private static final String AUTH_HEADER_NAME = "X-AUTH-TOKEN";
+    private static final String AUTH_HEADER_NAME = "Bear";
     private final TokenAuthenticator authenticator;
     private ObjectMapper mapper;
 
