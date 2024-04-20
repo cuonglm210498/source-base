@@ -20,9 +20,7 @@ public class EntityAuditing implements AuditorAware<String> {
         }
 
         try {
-            UserAuthentication userAuthentication = (UserAuthentication) SecurityContextHolder.getContext().getAuthentication();
-            UserDetailsImpl userDetails = (UserDetailsImpl) userAuthentication.getDetails();
-
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
             return Optional.of(userDetails.getUsername());
         } catch (Exception e) {
             return Optional.empty();

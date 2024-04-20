@@ -19,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final MessageCommon messageCommon;
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse auth(UserAuthRequest userAuthRequest) {
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
     public void update(Long id, UserUpdateRequest userUpdateRequest) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            user.get().setPassword(AlgorithmUtils.hash(userUpdateRequest.getPassword()));
+            user.get().setPassword(passwordEncoder.encode(userUpdateRequest.getPassword()));
             user.get().setEmail(userUpdateRequest.getEmail());
             user.get().setPhone(userUpdateRequest.getPhone());
             user.get().setAddress(userUpdateRequest.getAddress());
