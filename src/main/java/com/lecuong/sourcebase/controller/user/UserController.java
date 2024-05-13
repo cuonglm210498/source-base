@@ -78,4 +78,10 @@ public class UserController extends BaseController {
     public ResponseEntity<BaseResponse<String>> getMessage(@RequestBody UserSaveRequest userRequest) {
         return ResponseEntity.ok(BaseResponse.ofSuccess(userService.getMessage(userRequest)));
     }
+
+    @GetMapping("/find-by-id-and-call-proc/{id}")
+    public ResponseEntity<BaseResponse<UserResponse>> findByIdAndCallProc(@PathVariable Long id) {
+        UserResponse userResponse =userService.findUserByIdAndCallProc(id);
+        return ResponseEntity.ok(BaseResponse.ofSuccess(userResponse));
+    }
 }

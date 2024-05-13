@@ -148,4 +148,10 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(StatusTemplate.USER_NOT_FOUND);
         }
     }
+
+    @Override
+    public UserResponse findUserByIdAndCallProc(Long id) {
+        Optional<User> user = userRepository.findUserByIdAndCallProc(id);
+        return this.checkUserExist(user);
+    }
 }

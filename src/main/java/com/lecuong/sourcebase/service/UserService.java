@@ -35,4 +35,6 @@ public interface UserService {
     String getMessage(UserSaveRequest userSaveRequest);
 
     List<UserResponse> getAll();
+
+    UserResponse findUserByIdAndCallProc(Long id);
 }

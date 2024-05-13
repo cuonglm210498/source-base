@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,4 +23,18 @@ public interface UserRepository extends BaseRepository<User, Long>, UserCustomRe
     long countAllByEmail(String email);
 
     long countAllByPhone(String phone);
+
+    @Query(value = "CALL sp_get_user_by_id(:id)", nativeQuery = true)
+    Optional<User> findUserByIdAndCallProc(Long id);
+//    DELIMITER $$
+//    CREATE PROCEDURE `sp_get_user_by_id`(IN user_id BIGINT(20))
+//    BEGIN
+//            SELECT
+//		*
+//    FROM `user` u
+//    WHERE u.id = user_id;
+//    END$$
+//            DELIMITER ;
+//
+//    call sp_get_user_by_id(1);
 }
