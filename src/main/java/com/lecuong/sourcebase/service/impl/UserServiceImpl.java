@@ -14,13 +14,16 @@ import com.lecuong.sourcebase.repository.UserRepository;
 import com.lecuong.sourcebase.service.UserService;
 import com.lecuong.sourcebase.specification.UserSpecification;
 import com.lecuong.sourcebase.util.AlgorithmUtils;
+import com.lecuong.sourcebase.util.BatchProcessUtils;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -134,6 +137,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponse> getAll() {
         return userRepository.findAll().stream().map(userMapper::to).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void saveBatchProcess(List<UserSaveRequest> userSaveRequests) {
+        List<User> userMappers = userSaveRequests.stream().map(userMapper::to).collect(Collectors.toList());
+
+        int batchSize = 100;
+        List<List<User>> users = BatchProcessUtils.partitionList(userMappers, batchSize);
+        for (List<User> batch : users) {
+            try {
+                userRepository.saveAll(batch);
+            } catch (Exception ex) {
+                // Xử lý ngoại lệ và log lại thông tin lỗi
+                // Rollback transaction khi gặp lỗi
+                throw new BusinessException(StatusTemplate.BATCH_INSERT_ERROR);
+            }
+        }
     }
 
     private UserResponse checkUserExist(Optional<User> user) {

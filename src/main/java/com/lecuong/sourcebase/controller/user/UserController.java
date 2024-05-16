@@ -1,7 +1,5 @@
 package com.lecuong.sourcebase.controller.user;
 
-import com.lecuong.sourcebase.common.DateTimeCommon;
-import com.lecuong.sourcebase.constant.TemplateReportConstant;
 import com.lecuong.sourcebase.controller.BaseController;
 import com.lecuong.sourcebase.modal.request.user.UserFilterRequest;
 import com.lecuong.sourcebase.modal.request.user.UserFilterWithListBlogRequest;
@@ -11,17 +9,14 @@ import com.lecuong.sourcebase.modal.response.BaseResponse;
 import com.lecuong.sourcebase.modal.response.user.UserResponse;
 import com.lecuong.sourcebase.service.ReportService;
 import com.lecuong.sourcebase.service.UserService;
+import com.lecuong.sourcebase.validate.UserValidator;
 import lombok.Data;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Data
@@ -33,6 +28,7 @@ public class UserController extends BaseController {
 
     private final ReportService reportService;
     private final UserService userService;
+    private final UserValidator userValidator;
 
     @PutMapping("/{id}")
     public ResponseEntity<BaseResponse<Void>> update(@PathVariable Long id,
@@ -77,5 +73,15 @@ public class UserController extends BaseController {
     @PostMapping("/message")
     public ResponseEntity<BaseResponse<String>> getMessage(@RequestBody UserSaveRequest userRequest) {
         return ResponseEntity.ok(BaseResponse.ofSuccess(userService.getMessage(userRequest)));
+    }
+
+    @PostMapping("/insert-user-batch")
+    public ResponseEntity<BaseResponse<Void>> saveBatchProcess(@RequestBody List<UserSaveRequest> userSaveRequests) {
+        //validate userSaveRequest
+        userSaveRequests.forEach(userSaveRequest -> {
+            userValidator.validateUserSaveRequest(userSaveRequest);
+        });
+        userService.saveBatchProcess(userSaveRequests);
+        return ResponseEntity.ok(BaseResponse.ofSuccess(null));
     }
 }

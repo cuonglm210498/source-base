@@ -84,4 +84,7 @@ public interface StatusTemplate {
     StatusResponse INVALID_API_KEY =
             new StatusResponse("WORK-INVALID-API-KEY", "Invalid API key", HttpStatus.INTERNAL_SERVER_ERROR);
 
+    StatusResponse BATCH_INSERT_ERROR =
+            new StatusResponse("SHOP-BATCH-INSERT-ERROR", "Batch insert error", HttpStatus.INTERNAL_SERVER_ERROR);
+
 }
