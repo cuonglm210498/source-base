@@ -42,4 +42,20 @@ public class AlgorithmUtils {
         }
 
     }
+
+    public static String base64decode(String s) {
+        return org.apache.commons.codec.binary.StringUtils.newStringUtf8(org.apache.commons.codec.binary.Base64.decodeBase64(s));
+    }
+
+    public static byte[] base64decodeToBytes(String s) {
+        return org.apache.commons.codec.binary.Base64.decodeBase64(s);
+    }
+
+    public static String base64encode(String s) {
+        return org.apache.commons.codec.binary.Base64.encodeBase64String(org.apache.commons.codec.binary.StringUtils.getBytesUtf8(s));
+    }
+
+    public static String base64encode(byte[] bytes) {
+        return org.apache.commons.codec.binary.Base64.encodeBase64String(bytes);
+    }
 }
