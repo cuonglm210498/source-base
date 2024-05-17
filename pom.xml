@@ -117,10 +117,10 @@
             <version>2.12.0</version>
         </dependency>
 
+        <!-- Config encode and decode base64     -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.15</version> <!-- Sử dụng phiên bản mới nhất của Commons Codec -->
         </dependency>
     </dependencies>
 
