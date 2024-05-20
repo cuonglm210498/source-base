@@ -59,4 +59,15 @@ public interface BusinessCodeResponse {
      */
     ErrorCodeResponse API_KEY_NOT_FOUND =
             new ErrorCodeResponse("API-KEY-NOT-FOUND", "Api key not found", HttpStatus.NOT_FOUND);
+
+    /**
+     * Exception Client
+     */
+    ErrorCodeResponse CLIENT_NOT_FOUND =
+            new ErrorCodeResponse("CLIENT-NOT-FOUND", "Client not found", HttpStatus.NOT_FOUND);
+    ErrorCodeResponse INVALID_AUTHENTICATION_HEADER =
+            new ErrorCodeResponse("INVALID-AUTHENTICATION-HEADER", "Invalid authentication header", HttpStatus.INTERNAL_SERVER_ERROR);
+    ErrorCodeResponse INCORRECT_CLIENT_AUTHENTICATION =
+            new ErrorCodeResponse("INCORRECT-CLIENT-AUTHENTICATION", "Incorrect client authentication", HttpStatus.INTERNAL_SERVER_ERROR);
+
 }

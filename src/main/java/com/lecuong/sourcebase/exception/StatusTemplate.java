@@ -91,4 +91,14 @@ public interface StatusTemplate {
     StatusResponse API_KEY_NOT_FOUND =
             new StatusResponse("API-KEY-NOT-FOUND", "Api key not found", HttpStatus.NOT_FOUND);
 
+    /**
+     * Exception Client
+     */
+    StatusResponse CLIENT_NOT_FOUND =
+            new StatusResponse("CLIENT-NOT-FOUND", "Client not found", HttpStatus.NOT_FOUND);
+    StatusResponse INVALID_AUTHENTICATION_HEADER =
+            new StatusResponse("INVALID-AUTHENTICATION-HEADER", "Invalid authentication header", HttpStatus.INTERNAL_SERVER_ERROR);
+    StatusResponse INCORRECT_CLIENT_AUTHENTICATION =
+            new StatusResponse("INCORRECT-CLIENT-AUTHENTICATION", "Incorrect client authentication", HttpStatus.INTERNAL_SERVER_ERROR);
+
 }
