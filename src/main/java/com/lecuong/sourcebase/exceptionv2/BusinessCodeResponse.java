@@ -53,4 +53,10 @@ public interface BusinessCodeResponse {
             new ErrorCodeResponse("SHOP-VALIDATE-USER", "Email is invalid or contains blank", HttpStatus.BAD_REQUEST);
     ErrorCodeResponse PHONE_NUMBER_INVALIDATE =
             new ErrorCodeResponse("SHOP-VALIDATE-USER", "Phone number invalidate", HttpStatus.BAD_REQUEST);
+
+    /**
+     * Exception API-KEY
+     */
+    ErrorCodeResponse API_KEY_NOT_FOUND =
+            new ErrorCodeResponse("API-KEY-NOT-FOUND", "Api key not found", HttpStatus.NOT_FOUND);
 }

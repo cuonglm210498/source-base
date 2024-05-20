@@ -1,6 +1,7 @@
 package com.lecuong.sourcebase.exception;
 
 import com.lecuong.sourcebase.constant.MessageConstant;
+import com.lecuong.sourcebase.exceptionv2.ErrorCodeResponse;
 import org.springframework.http.HttpStatus;
 
 public interface StatusTemplate {
@@ -83,5 +84,11 @@ public interface StatusTemplate {
 
     StatusResponse INVALID_API_KEY =
             new StatusResponse("WORK-INVALID-API-KEY", "Invalid API key", HttpStatus.INTERNAL_SERVER_ERROR);
+
+    /**
+     * Exception API-KEY
+     */
+    StatusResponse API_KEY_NOT_FOUND =
+            new StatusResponse("API-KEY-NOT-FOUND", "Api key not found", HttpStatus.NOT_FOUND);
 
 }
