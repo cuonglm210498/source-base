@@ -30,16 +30,53 @@ public class AlgorithmUtils {
         }
     }
 
-    public static String hash(String password)  {
+    public static String hash(String input)  {
         MessageDigest messageDigest = null;
         try {
             messageDigest = MessageDigest.getInstance(SHA_ALGORITHM);
-            byte[] digest = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));
+            byte[] digest = messageDigest.digest(input.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(digest);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
 
+    }
+
+    public static String hashSha256(String input)  {
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = messageDigest.digest(input.getBytes());
+            StringBuilder hexString = new StringBuilder(2 * bytes.length);
+            for (int i = 0; i < bytes.length; i++) {
+                String hex = Integer.toHexString(0xff & bytes[i]);
+                if(hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+
+    public static String base64Decode(String s) {
+        return org.apache.commons.codec.binary.StringUtils.newStringUtf8(org.apache.commons.codec.binary.Base64.decodeBase64(s));
+    }
+
+    public static byte[] base64DecodeToBytes(String s) {
+        return org.apache.commons.codec.binary.Base64.decodeBase64(s);
+    }
+
+    public static String base64Encode(String s) {
+        return org.apache.commons.codec.binary.Base64.encodeBase64String(org.apache.commons.codec.binary.StringUtils.getBytesUtf8(s));
+    }
+
+    public static String base64Encode(byte[] bytes) {
+        return org.apache.commons.codec.binary.Base64.encodeBase64String(bytes);
     }
 }
