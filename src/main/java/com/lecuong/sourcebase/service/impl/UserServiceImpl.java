@@ -16,21 +16,28 @@ import com.lecuong.sourcebase.specification.UserSpecification;
 import com.lecuong.sourcebase.util.AlgorithmUtils;
 import com.lecuong.sourcebase.util.BatchProcessUtils;
 import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Data
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final MessageCommon messageCommon;
     private final UserMapper userMapper;
@@ -155,6 +162,66 @@ public class UserServiceImpl implements UserService {
                 throw new BusinessException(StatusTemplate.BATCH_INSERT_ERROR);
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public List<UserResponse> getAllUserUsingBatchProcess() {
+        List<UserResponse> userResponses = new ArrayList<>();
+        int pageNumber = 0;
+        int batchSize = 10000;
+
+        while (true) {
+            Page<User> batch = userRepository.findAll(PageRequest.of(pageNumber, batchSize));
+
+            if (batch.isEmpty()) break;
+            userResponses.addAll(batch.getContent().stream().map(userMapper::to).collect(Collectors.toList()));
+
+            pageNumber++;
+        }
+        return userResponses;
+    }
+
+    @Async
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserResponse> getAllUserUsingBatchProcessV2() {
+        List<UserResponse> userResponses = new ArrayList<>();
+        int pageNumber = 0;
+        int batchSize = 10000;
+
+        long startTime = System.currentTimeMillis();
+
+        List<CompletableFuture<List<UserResponse>>> futures = new ArrayList<>();
+
+        while (true) {
+            // Lấy batch từ cơ sở dữ liệu
+            Page<User> batch = userRepository.findAll(PageRequest.of(pageNumber, batchSize));
+            if (batch.isEmpty()) break;
+
+            // Xử lý mỗi batch trong một luồng riêng biệt
+            CompletableFuture<List<UserResponse>> future =
+                    CompletableFuture.supplyAsync(() -> batch.getContent().stream().map(userMapper::to).collect(Collectors.toList()));
+
+            futures.add(future);
+
+            pageNumber++;
+            logger.info("Started processing page number: {}", pageNumber);
+        }
+
+        // Gộp kết quả từ các luồng
+        for (CompletableFuture<List<UserResponse>> future : futures) {
+            try {
+                userResponses.addAll(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                logger.error("Error occurred while processing batch: {}", e.getMessage());
+            }
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.info("Total time taken: {} seconds", (endTime - startTime) / 1000);
+
+        return userResponses;
     }
 
     private UserResponse checkUserExist(Optional<User> user) {

@@ -84,4 +84,14 @@ public class UserController extends BaseController {
         userService.saveBatchProcess(userSaveRequests);
         return ResponseEntity.ok(BaseResponse.ofSuccess(null));
     }
+
+    @GetMapping("/get-user-batch")
+    public ResponseEntity<BaseResponse<List<UserResponse>>> getBatchProcess() {
+        return ResponseEntity.ok(BaseResponse.ofSuccess(userService.getAllUserUsingBatchProcess()));
+    }
+
+    @GetMapping("/get-user-batch-v2")
+    public ResponseEntity<BaseResponse<List<UserResponse>>> getBatchProcessV2() {
+        return ResponseEntity.ok(BaseResponse.ofSuccess(userService.getAllUserUsingBatchProcessV2()));
+    }
 }

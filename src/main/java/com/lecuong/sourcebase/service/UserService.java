@@ -37,4 +37,8 @@ public interface UserService {
     List<UserResponse> getAll();
 
     void saveBatchProcess(List<UserSaveRequest> userSaveRequests);
+
+    List<UserResponse> getAllUserUsingBatchProcess();
+
+    List<UserResponse> getAllUserUsingBatchProcessV2();
 }
