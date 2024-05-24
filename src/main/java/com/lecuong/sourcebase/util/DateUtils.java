@@ -1,5 +1,6 @@
 package com.lecuong.sourcebase.util;
 
+import com.lecuong.sourcebase.common.DateTimeCommon;
 import org.springframework.util.StringUtils;
 
 import java.text.DateFormat;
@@ -588,5 +589,30 @@ public class DateUtils {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public static Date convertToDate(String value)  {
+        try {
+            return new SimpleDateFormat(DateTimeCommon.DateTimeFormat.DD_MM_YYYY).parse(value);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Date today() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.set(Calendar.HOUR, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+    public static Date plusDay(Date startDate, Integer numberExtraDays) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        calendar.add(Calendar.DAY_OF_MONTH, numberExtraDays);
+        return calendar.getTime();
     }
 }
