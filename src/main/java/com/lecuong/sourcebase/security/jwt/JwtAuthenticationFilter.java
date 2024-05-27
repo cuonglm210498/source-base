@@ -44,7 +44,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        final List<String> apiBase = List.of("/api/v1/user/register", "/api/v1/user/login");
+        final List<String> apiBase = List.of(
+                "/api/v1/user/register",
+                "/api/v1/user/login",
+                "/v2/api-docs",
+                "/configuration/ui",
+                "/swagger-resources",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars",
+                "/swagger-ui");
 
         Predicate<HttpServletRequest> isApiBase = r -> apiBase.stream()
                 .anyMatch(uri -> r.getRequestURI().toLowerCase().contains(uri.toLowerCase()));

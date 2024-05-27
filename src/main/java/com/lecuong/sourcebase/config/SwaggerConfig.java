@@ -19,7 +19,7 @@ import java.util.List;
 public class SwaggerConfig {
 
     public static final String NAME = "JWT";
-    public static final String KEY_NAME = "X-AUTH-TOKEN";
+    public static final String KEY_NAME = "Authorization";
     public static final String PASS_AS = "header";
 
     @Bean
