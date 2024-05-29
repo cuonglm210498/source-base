@@ -84,4 +84,10 @@ public interface StatusTemplate {
     StatusResponse INVALID_API_KEY =
             new StatusResponse("WORK-INVALID-API-KEY", "Invalid API key", HttpStatus.INTERNAL_SERVER_ERROR);
 
+    /**
+     * Exception redis
+     */
+    StatusResponse SESSION_ID_EMPTY =
+            new StatusResponse("SESSION-ID-EMPTY", "SessionId is empty", HttpStatus.NOT_FOUND);
+
 }

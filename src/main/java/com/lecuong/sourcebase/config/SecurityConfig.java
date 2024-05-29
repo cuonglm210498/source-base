@@ -53,6 +53,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/api-key")
                 .permitAll()
+                .antMatchers(HttpMethod.POST, "/redis/add-list-session-id").permitAll()
+                .antMatchers(HttpMethod.POST, "/redis/add-session-id").permitAll()
+                .antMatchers(HttpMethod.GET, "/redis/get-list-session-id").permitAll()
+                .antMatchers(HttpMethod.GET, "/redis/get-session-id").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/redis/delete-list-session-id/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/redis/delete-session-id/**").permitAll()
                 .and()
                 .headers()
                 .cacheControl();

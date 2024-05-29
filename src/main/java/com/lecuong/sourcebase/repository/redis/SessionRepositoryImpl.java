@@ -1,6 +1,6 @@
 package com.lecuong.sourcebase.repository.redis;
 
-import com.lecuong.sourcebase.entity.User;
+import com.lecuong.sourcebase.util.JsonConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -10,20 +10,19 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.Map;
+import java.util.List;
 
 @Repository
-public class UserAppRepositoryImpl implements UserAppRepository {
+public class SessionRepositoryImpl implements SessionRepository {
 
-    private static final String KEY = "USER_APP_KEY";
+    private static final String TOPIC = "SESSION_CHECK";
 
     @Resource(name = "redisTemplateCustom")
     private RedisTemplate<String, Object> redisTemplate;
-
     private HashOperations hashOperations;
 
     @Autowired
-    public UserAppRepositoryImpl(RedisTemplate<String, Object> redisTemplate) {
+    public SessionRepositoryImpl(RedisTemplate<String, Object> redisTemplate) {
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
@@ -36,34 +35,30 @@ public class UserAppRepositoryImpl implements UserAppRepository {
         hashOperations = redisTemplate.opsForHash();
     }
 
-
     @Override
-    public void add(String id, User user) {
-        hashOperations.put(KEY, id, user);
+    public void add(String key, String sessionId) {
+        hashOperations.put(TOPIC, key, sessionId);
     }
 
     @Override
-    public void addBlacklist(String id, Long time) {
-        hashOperations.put(KEY, id, time);
+    public void addList(String key, List<String> listSessionId) {
+        String listSessionIdJson = JsonConvertUtils.convertObjectToJsonWithGson(listSessionId);
+        hashOperations.put(TOPIC, key, listSessionIdJson);
     }
 
     @Override
-    public void delete(String id) {
-        hashOperations.delete(KEY, id);
+    public String find(String key) {
+        return (String) hashOperations.get(TOPIC, key);
     }
 
     @Override
-    public User find(String id) {
-        return (User) hashOperations.get(KEY, id);
+    public List<String> findList(String key) {
+        String listSessionIdJson = (String) hashOperations.get(TOPIC, key);
+        return JsonConvertUtils.convertJsonArrayToListWithGson(listSessionIdJson, String.class);
     }
 
     @Override
-    public Long findBlacklist(String id) {
-        return (Long) hashOperations.get(KEY, id);
-    }
-
-    @Override
-    public Map<Object, Object> findAll() {
-        return hashOperations.entries(KEY);
+    public void delete(String key) {
+        hashOperations.delete(TOPIC, key);
     }
 }

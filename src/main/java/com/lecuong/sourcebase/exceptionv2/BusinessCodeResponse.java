@@ -53,4 +53,10 @@ public interface BusinessCodeResponse {
             new ErrorCodeResponse("SHOP-VALIDATE-USER", "Email is invalid or contains blank", HttpStatus.BAD_REQUEST);
     ErrorCodeResponse PHONE_NUMBER_INVALIDATE =
             new ErrorCodeResponse("SHOP-VALIDATE-USER", "Phone number invalidate", HttpStatus.BAD_REQUEST);
+
+    /**
+     * Exception redis
+     */
+    ErrorCodeResponse SESSION_ID_EMPTY =
+            new ErrorCodeResponse("SESSION-ID-EMPTY", "SessionId is empty", HttpStatus.NOT_FOUND);
 }

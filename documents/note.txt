@@ -1,0 +1,25 @@
+- Install Redis trên docker:
+    + docker pull redis/redis-stack-server:latest
+    + docker run -d --name redis-stack-server -p 6379:6379 redis/redis-stack-server:latest
+
+- Add thư viện redis vào file pom.xml
+<!--  Config Redis      -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>6.3.1.RELEASE</version>
+        </dependency>
+<!--  End Config Redis      -->
+
+- Tạo class RedisConfig
+- Tạo interface MessagePublisher, MessagePublisherImpl, MessageSubscriber
+- Tạo interface UserAppRepository, class UserAppRepositoryImpl, SessionRepository, class SessionRepositoryImpl
+- Tạo class RedisController trong package controller.redis

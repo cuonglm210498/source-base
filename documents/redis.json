@@ -1,0 +1,126 @@
+{
+	"info": {
+		"_postman_id": "28d883da-f3a4-4cf5-8ef7-1bb6816c6ca3",
+		"name": "Redis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28565981"
+	},
+	"item": [
+		{
+			"name": "get-list-session-id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/redis/add-list-session-id",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"redis",
+						"add-list-session-id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-list-session-id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/redis/get-list-session-id",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"redis",
+						"get-list-session-id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-list-session-id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/redis/delete-list-session-id/session-id-list",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"redis",
+						"delete-list-session-id",
+						"session-id-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-session-id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/redis/add-session-id",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"redis",
+						"add-session-id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-session-id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/redis/get-session-id",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"redis",
+						"get-session-id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-session-id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/redis/delete-session-id/session-id",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"redis",
+						"delete-session-id",
+						"session-id"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
