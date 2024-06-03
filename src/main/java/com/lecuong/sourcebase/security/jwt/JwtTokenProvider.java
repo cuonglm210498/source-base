@@ -45,7 +45,7 @@ public class JwtTokenProvider {
                 .claim("user", userDetails.getUser())
                 .claim("authorities", userDetails.getAuthorities())
                 .claim("jwk", AlgorithmUtils.base64Encode(jwtConfig.getSecretKey()))
-                .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecretKey().toLowerCase())
+                .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecretKey())
                 .compact();
     }
 
