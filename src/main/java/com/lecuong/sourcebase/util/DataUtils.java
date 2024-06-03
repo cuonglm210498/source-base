@@ -167,4 +167,21 @@ public class DataUtils {
     public static boolean isNullOrEmpty(final Object obj) {
         return obj == null || obj.toString().isEmpty();
     }
+
+    public static boolean isTrue(Object value) {
+
+        if (value == null) return false;
+
+        if (value instanceof String) return !((String) value).trim().isEmpty();
+
+        if (value instanceof Number) return !((Number) value).equals(0L);
+
+        if (value instanceof Boolean) return (Boolean) value;
+
+        if (value instanceof Collection) return !((Collection) value).isEmpty();
+
+        if (value instanceof Object[]) return ((Object[]) value).length > 0;
+
+        return true;
+    }
 }

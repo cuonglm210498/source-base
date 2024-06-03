@@ -4,6 +4,7 @@ import com.lecuong.sourcebase.modal.request.user.UserAuthRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
 import com.lecuong.sourcebase.security.UserDetailsImpl;
 import com.lecuong.sourcebase.security.jwt.JwtTokenProvider;
+import com.lecuong.sourcebase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,8 +26,14 @@ public class LoginController {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping
     public ResponseEntity<BaseResponse<String>> login(@RequestBody UserAuthRequest loginRequest) {
+
+        userService.verifyUserNameAndPassword(loginRequest);
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUserName(),

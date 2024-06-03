@@ -30,6 +30,27 @@ public class RestApiUtils {
     private final RestTemplate restTemplate;
 
     /**
+     * Function callRestApi được sử dụng để gọi đến API của hệ thống khác
+     * @param path: url của API gọi đến
+     * @param method: HttpMethod của API gọi đến
+     * @param headers: header của API gọi đến
+     * @param request: body của request
+     * @param clazz: Kiểu trả về của class khi có response trả về
+     */
+    public <T> T callRestApi(final String path, final HttpMethod method, HttpHeaders headers, Object request, Class<T> clazz) {
+        try {
+            var response =
+                    restTemplate.exchange(path, method, new HttpEntity<>(request, headers), clazz);
+
+            if (HttpStatus.OK == response.getStatusCode() || HttpStatus.CREATED == response.getStatusCode())
+                return response.getBody();
+            return null;
+        } catch (Exception e) {
+            throw new BusinessException(StatusTemplate.REST_API_CALL);
+        }
+    }
+
+    /**
      * call api with nobody in request
      */
     public <T> T callRestApi(final String path, final HttpMethod method, Class<T> clazz) {

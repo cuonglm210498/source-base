@@ -2,6 +2,7 @@ package com.lecuong.sourcebase.security.jwt;
 
 import com.lecuong.sourcebase.security.UserDetailsImpl;
 import com.lecuong.sourcebase.security.UserToken;
+import com.lecuong.sourcebase.util.AlgorithmUtils;
 import com.lecuong.sourcebase.util.JsonConvertUtils;
 import io.jsonwebtoken.*;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -17,6 +18,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class JwtTokenProvider {
@@ -28,16 +30,22 @@ public class JwtTokenProvider {
 
     public String generateToken(UserDetailsImpl userDetails) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtConfig.getExpiration());
 //        Date expiryDate = new Date(now.getTime() + 120000L);
+        Date expiryDate = new Date(now.getTime() + jwtConfig.getExpiration());
+        String jti = UUID.randomUUID().toString();
         return Jwts.builder()
+                .setHeaderParam("typ", "JWT")
+                .setId(jti)
+                .setIssuer("shop-project")
                 .setSubject(Long.toString(userDetails.getUser().getId()))
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecretKey())
+                .setAudience("shop-project")
                 .claim("userName", userDetails.getUser().getUserName())
                 .claim("user", userDetails.getUser())
                 .claim("authorities", userDetails.getAuthorities())
+                .claim("jwk", AlgorithmUtils.base64Encode(jwtConfig.getSecretKey()))
+                .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecretKey().toLowerCase())
                 .compact();
     }
 

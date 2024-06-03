@@ -51,6 +51,8 @@ public interface StatusTemplate {
             new StatusResponse("SHOP-VALIDATE-USER", "Email is invalid or contains blank", HttpStatus.BAD_REQUEST);
     StatusResponse PHONE_NUMBER_INVALIDATE =
             new StatusResponse("SHOP-VALIDATE-USER", "Phone number invalidate", HttpStatus.BAD_REQUEST);
+    StatusResponse USERNAME_PASSWORD_INCORRECT =
+            new StatusResponse("SHOP-USER", "Username or password incorrect", HttpStatus.NOT_FOUND);
 
     /**
      * Exception employee

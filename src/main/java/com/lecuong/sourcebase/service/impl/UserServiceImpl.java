@@ -14,12 +14,12 @@ import com.lecuong.sourcebase.repository.UserRepository;
 import com.lecuong.sourcebase.service.UserService;
 import com.lecuong.sourcebase.specification.UserSpecification;
 import com.lecuong.sourcebase.util.AlgorithmUtils;
+import com.lecuong.sourcebase.util.DataUtils;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +43,17 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findByUserNameAndPassword(userAuthRequest.getUserName(), password);
 
         return this.checkUserExist(user);
+    }
+
+    @Override
+    public void verifyUserNameAndPassword(UserAuthRequest userAuthRequest) {
+        User user = userRepository.findByUserName(userAuthRequest.getUserName());
+
+        if (DataUtils.isTrue(user) && passwordEncoder.matches(userAuthRequest.getPassword(), user.getPassword())) {
+            return;
+        } else {
+            throw new BusinessException(StatusTemplate.USERNAME_PASSWORD_INCORRECT);
+        }
     }
 
     @Override

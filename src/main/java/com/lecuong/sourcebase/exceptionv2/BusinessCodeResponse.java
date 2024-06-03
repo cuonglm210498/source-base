@@ -33,6 +33,8 @@ public interface BusinessCodeResponse {
             new ErrorCodeResponse("SHOP-USER-NOT-FOUND", "User not found", HttpStatus.NOT_FOUND);
     ErrorCodeResponse USER_MUST_LOGIN =
             new ErrorCodeResponse("SHOP-USER-MUST-LOGIN", "User must login", HttpStatus.BAD_REQUEST);
+    ErrorCodeResponse USERNAME_PASSWORD_INCORRECT =
+            new ErrorCodeResponse("SHOP-USER", "Username or password incorrect", HttpStatus.NOT_FOUND);
 
     /**
      * Exception validate user
