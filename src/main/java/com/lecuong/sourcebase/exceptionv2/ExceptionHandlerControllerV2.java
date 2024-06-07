@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.Map;
 
 /**
  * @author CuongLM
@@ -25,5 +28,10 @@ public class ExceptionHandlerControllerV2 {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<BaseResponseV2<ErrorCodeResponse>> handlerAccessDeniedException(AccessDeniedException e) {
         return new ResponseEntity<>(BaseResponseV2.ofFail(e), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<BaseResponseV2<Map<String, String>>> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return new ResponseEntity<>(BaseResponseV2.ofFail(e), HttpStatus.BAD_REQUEST);
     }
 }

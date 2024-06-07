@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @Data
 @RestController
 @RequestMapping("/api/v1/user/login")
@@ -24,7 +26,7 @@ public class LoginController {
     private final TokenProducer tokenProducer;
 
     @PostMapping
-    public ResponseEntity<BaseResponse<String>> login(@RequestBody UserAuthRequest userAuthRequest) {
+    public ResponseEntity<BaseResponse<String>> login(@RequestBody @Valid UserAuthRequest userAuthRequest) {
 
         //Validate userAuthRequest
 //        userValidator.validateUserAuthRequest(userAuthRequest);

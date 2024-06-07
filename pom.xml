@@ -147,6 +147,12 @@
             <artifactId>jxls-poi</artifactId>
             <version>2.9.0</version>
         </dependency>
+
+        <!-- Config validate object request -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

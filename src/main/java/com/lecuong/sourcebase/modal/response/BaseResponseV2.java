@@ -6,6 +6,11 @@ import com.lecuong.sourcebase.exceptionv2.ErrorCodeResponse;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author CuongLM
@@ -42,5 +47,15 @@ public class BaseResponseV2<T> {
 
     public static BaseResponseV2<ErrorCodeResponse> ofFail(AccessDeniedException accessDeniedException) {
         return new BaseResponseV2<>(BusinessCodeResponse.FORBIDDEN, null);
+    }
+
+    public static BaseResponseV2<Map<String, String>> ofFail(MethodArgumentNotValidException methodArgumentNotValidException) {
+        Map<String, String> errors = new HashMap<>();
+        methodArgumentNotValidException.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new BaseResponseV2<>(BusinessCodeResponse.VALIDATE, errors);
     }
 }

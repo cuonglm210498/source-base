@@ -17,6 +17,8 @@ public interface BusinessCodeResponse {
      */
     ErrorCodeResponse FORBIDDEN =
             new ErrorCodeResponse("SHOP-SERVER-FORBIDDEN", "No access to api", HttpStatus.FORBIDDEN);
+    ErrorCodeResponse VALIDATE =
+            new ErrorCodeResponse("SHOP-SERVER-VALIDATE", "Validate fail", HttpStatus.BAD_REQUEST);
 
     /**
      * Exception token
