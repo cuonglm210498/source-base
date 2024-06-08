@@ -1,4 +1,4 @@
-package com.lecuong.sourcebase.config;
+package com.lecuong.sourcebase.schedule.quartzv1.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
