@@ -147,6 +147,24 @@
             <artifactId>jxls-poi</artifactId>
             <version>2.9.0</version>
         </dependency>
+
+        <!-- Quartz job v2 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+
+        <!-- Quartz job v1 -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz-jobs</artifactId>
+            <version>2.2.1</version>
+        </dependency>
     </dependencies>
 
     <build>
