@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/v1/user/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/user/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/token/refresh-token").permitAll()
                 .anyRequest().authenticated(); // Tất cả các request khác đều cần phải xác thực mới được truy cập
 
         // Thêm một lớp Filter kiểm tra jwt

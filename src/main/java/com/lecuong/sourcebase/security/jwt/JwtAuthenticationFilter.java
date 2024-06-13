@@ -60,7 +60,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (!isApiBase.test(request)) {
             String jwt = getJwtFromRequest(request);
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt) && "refresh".equals(tokenProvider.getTypeOfToken(jwt))) {
+                // Kiểm tra nếu là refresh_token và không phải endpoint làm mới token thì trả về lỗi
+                // Trường hợp truyền refresh_token để truy cập các API (không được phép truy cập)
+                // Ngược lại thì cho đi qua
+                if (!"/api/v1/token/refresh-token".equalsIgnoreCase(request.getRequestURI())) {
+                    HttpServletResponse resp = response;
+                    resp.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    BusinessException error;
+                    error = new BusinessException(StatusTemplate.REFRESH_TOKEN_IS_NOT_ALLOWED);
+                    this.objectMapper.writeValue(resp.getOutputStream(), BaseResponse.ofFail(error));
+                    return;
+                } else {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+            } else if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt) && "access".equals(tokenProvider.getTypeOfToken(jwt))) {
                 String userName = tokenProvider.getUsername(jwt);
                 UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userName);
                 if (userDetails != null) {
@@ -73,13 +89,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 HttpServletResponse resp = response;
                 resp.setStatus(HttpStatus.UNAUTHORIZED.value());
                 BusinessException error;
-                error = new BusinessException(StatusTemplate.TOKEN);
+                if ("refresh".equals(tokenProvider.getTypeOfToken(jwt))) {
+                    error = new BusinessException(StatusTemplate.REFRESH_TOKEN);
+                } else {
+                    error = new BusinessException(StatusTemplate.TOKEN);
+                }
                 this.objectMapper.writeValue(resp.getOutputStream(), BaseResponse.ofFail(error));
                 return;
             }
         }
         filterChain.doFilter(request, response);
-        return;
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {

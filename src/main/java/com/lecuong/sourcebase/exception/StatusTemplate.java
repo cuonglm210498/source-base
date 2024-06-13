@@ -23,6 +23,12 @@ public interface StatusTemplate {
             new StatusResponse("SHOP-TOKEN-INVALID", "token invalid", HttpStatus.UNAUTHORIZED);
     StatusResponse TOKEN =
             new StatusResponse("SHOP-TOKEN", "Token expired, Token invalid, Unsupported JWT token, JWT claims string is empty", HttpStatus.UNAUTHORIZED);
+    StatusResponse REFRESH_TOKEN =
+            new StatusResponse("SHOP-REFRESH-TOKEN", "Refresh token expired, refresh token invalid, Unsupported JWT token, JWT claims string is empty", HttpStatus.UNAUTHORIZED);
+    StatusResponse TOKEN_IS_NOT_REFRESH_TOKEN =
+            new StatusResponse("SHOP-REFRESH-TOKEN", "Token is not a refresh token", HttpStatus.UNAUTHORIZED);
+    StatusResponse REFRESH_TOKEN_IS_NOT_ALLOWED =
+            new StatusResponse("SHOP-REFRESH-TOKEN", "Refresh token is not allowed", HttpStatus.UNAUTHORIZED);
 
     /**
      * Exception user

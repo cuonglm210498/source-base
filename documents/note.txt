@@ -1,0 +1,17 @@
+A refresh token là một mã thông báo đặc biệt được sử dụng để lấy mã thông báo truy cập (access token) mới khi
+mã thông báo truy cập hiện tại hết hạn. Thông thường, trong các hệ thống xác thực và ủy quyền như OAuth 2.0,
+mã thông báo truy cập có thời hạn sử dụng ngắn để tăng cường bảo mật. Khi mã thông báo truy cập hết hạn,
+người dùng cần phải đăng nhập lại hoặc sử dụng refresh token để lấy mã thông báo truy cập mới mà không cần phải đăng nhập lại.
+
+Cụ thể, quy trình sử dụng refresh token thường diễn ra như sau:
+
+- Đăng nhập: Người dùng đăng nhập vào hệ thống và nhận được cả mã thông báo truy cập (access token) và mã thông báo làm
+mới (refresh token).
+- Truy cập tài nguyên: Người dùng sử dụng mã thông báo truy cập để truy cập các tài nguyên được bảo vệ.
+- Mã thông báo truy cập hết hạn: Sau một khoảng thời gian, mã thông báo truy cập sẽ hết hạn và không thể sử dụng được nữa.
+- Làm mới mã thông báo: Thay vì yêu cầu người dùng đăng nhập lại, ứng dụng sẽ gửi refresh token đến máy chủ xác thực để
+yêu cầu một mã thông báo truy cập mới.
+- Nhận mã thông báo truy cập mới: Máy chủ xác thực xác minh refresh token và, nếu hợp lệ, sẽ cấp một mã thông báo
+truy cập mới. Nếu refresh token không hợp lệ (ví dụ: đã hết hạn hoặc bị thu hồi), người dùng sẽ phải đăng nhập lại.
+- Refresh token giúp cải thiện trải nghiệm người dùng bằng cách giảm số lần họ phải đăng nhập lại, đồng thời vẫn duy trì
+mức độ bảo mật cao.

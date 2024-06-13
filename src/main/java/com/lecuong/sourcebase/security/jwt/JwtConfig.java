@@ -22,6 +22,9 @@ public class JwtConfig {
     @Value("${token.privateKey}")
     private String privateKey;
 
+    @Value("${refresh.token.expired}")
+    private long refreshTokenExpiration;
+
     public long getExpiration() {
         return expiration;
     }
@@ -36,5 +39,9 @@ public class JwtConfig {
 
     public String getPrivateKey() {
         return privateKey;
+    }
+
+    public long getRefreshTokenExpiration() {
+        return refreshTokenExpiration;
     }
 }

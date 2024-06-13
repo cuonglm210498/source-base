@@ -6,6 +6,7 @@ import com.lecuong.sourcebase.util.AlgorithmUtils;
 import com.lecuong.sourcebase.util.JsonConvertUtils;
 import io.jsonwebtoken.*;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,26 @@ public class JwtTokenProvider {
                 .claim("user", userDetails.getUser())
                 .claim("authorities", userDetails.getAuthorities())
                 .claim("jwk", AlgorithmUtils.base64Encode(jwtConfig.getSecretKey()))
+                .claim("type", "access")
+                .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecretKey())
+                .compact();
+    }
+
+    public String generateRefreshToken(UserDetailsImpl userDetails) {
+        Date now = new Date();
+        // refresh token có thời hạn là 1 tuần
+        Date expiryDate = new Date(now.getTime() + jwtConfig.getRefreshTokenExpiration());
+        String jti = UUID.randomUUID().toString();
+        return Jwts.builder()
+                .setHeaderParam("typ", "JWT")
+                .setId(jti)
+                .setIssuer("shop-project")
+                .setSubject(Long.toString(userDetails.getUser().getId()))
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .setAudience("shop-project")
+                .claim("userName", userDetails.getUser().getUserName())
+                .claim("type", "refresh")
                 .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecretKey())
                 .compact();
     }
@@ -80,6 +101,14 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return (List<String>) claims.get("authorities");
+    }
+
+    public String getTypeOfToken(String token) {
+        String[] chunks = token.split("\\.");
+        java.util.Base64.Decoder decoder = java.util.Base64.getUrlDecoder();
+        String payloadJwt = new String(decoder.decode(chunks[1]));
+        JSONObject payloadJson = new JSONObject(payloadJwt);
+        return payloadJson.getString("type");
     }
 
     public boolean validateToken(String authToken) {

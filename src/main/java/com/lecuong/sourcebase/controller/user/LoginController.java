@@ -2,6 +2,7 @@ package com.lecuong.sourcebase.controller.user;
 
 import com.lecuong.sourcebase.modal.request.user.UserAuthRequest;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
+import com.lecuong.sourcebase.modal.response.user.UserAuthResponse;
 import com.lecuong.sourcebase.security.UserDetailsImpl;
 import com.lecuong.sourcebase.security.jwt.JwtTokenProvider;
 import com.lecuong.sourcebase.service.UserService;
@@ -30,7 +31,7 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<BaseResponse<String>> login(@RequestBody UserAuthRequest loginRequest) {
+    public ResponseEntity<BaseResponse<UserAuthResponse>> login(@RequestBody UserAuthRequest loginRequest) {
 
         userService.verifyUserNameAndPassword(loginRequest);
 
@@ -41,7 +42,11 @@ public class LoginController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken((UserDetailsImpl) authentication.getPrincipal());
-        return ResponseEntity.ok(BaseResponse.ofSuccess(jwt));
+
+        String accessToken = tokenProvider.generateToken((UserDetailsImpl) authentication.getPrincipal());
+        String refreshToken = tokenProvider.generateRefreshToken((UserDetailsImpl) authentication.getPrincipal());
+        UserAuthResponse userAuthResponse = new UserAuthResponse(accessToken, refreshToken);
+
+        return ResponseEntity.ok(BaseResponse.ofSuccess(userAuthResponse));
     }
 }
