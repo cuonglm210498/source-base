@@ -72,9 +72,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     error = new BusinessException(StatusTemplate.REFRESH_TOKEN_IS_NOT_ALLOWED);
                     this.objectMapper.writeValue(resp.getOutputStream(), BaseResponse.ofFail(error));
                     return;
-                } else {
-                    filterChain.doFilter(request, response);
-                    return;
                 }
             } else if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt) && "access".equals(tokenProvider.getTypeOfToken(jwt))) {
                 String userName = tokenProvider.getUsername(jwt);
