@@ -1,5 +1,6 @@
 package com.lecuong.sourcebase.util;
 
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.lecuong.sourcebase.exception.BusinessException;
 import com.lecuong.sourcebase.exception.StatusTemplate;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
@@ -114,7 +116,12 @@ public class RestApiUtils {
                     path,
                     method,
                     new HttpEntity<>(null, this.makeHeader()),
-                    new ParameterizedTypeReference<List<T>>() {});
+                    new ParameterizedTypeReference<List<T>>() {
+                        @Override
+                        public Type getType() {
+                            return TypeFactory.defaultInstance().constructCollectionType(List.class, clazz);
+                        }
+                    });
             if (HttpStatus.OK == response.getStatusCode() || HttpStatus.CREATED == response.getStatusCode())
                 return response.getBody();
             return Collections.emptyList();
