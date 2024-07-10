@@ -43,7 +43,8 @@ public class RefreshTokenController {
             UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(userName);
 
             String accessToken = tokenProvider.generateToken(userDetails);
-            UserAuthResponse userAuthResponse = new UserAuthResponse(accessToken, refreshToken);
+            String refreshTokenResponse = tokenProvider.generateRefreshToken(userDetails, tokenProvider.getExpirationDate(refreshToken));
+            UserAuthResponse userAuthResponse = new UserAuthResponse(accessToken, refreshTokenResponse);
             return ResponseEntity.ok(BaseResponse.ofSuccess(userAuthResponse));
         } else {
             throw new BusinessException(StatusTemplate.TOKEN_IS_NOT_REFRESH_TOKEN);

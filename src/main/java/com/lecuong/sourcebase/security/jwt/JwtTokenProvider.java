@@ -70,6 +70,23 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String generateRefreshToken(UserDetailsImpl userDetails, Date expiresDate) {
+        Date now = new Date();
+        String jti = UUID.randomUUID().toString();
+        return Jwts.builder()
+                .setHeaderParam("typ", "JWT")
+                .setId(jti)
+                .setIssuer("shop-project")
+                .setSubject(Long.toString(userDetails.getUser().getId()))
+                .setIssuedAt(now)
+                .setExpiration(expiresDate)
+                .setAudience("shop-project")
+                .claim("userName", userDetails.getUser().getUserName())
+                .claim("type", "refresh")
+                .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecretKey())
+                .compact();
+    }
+
     // Lấy thông tin user từ jwt
     public Long getUserId(String token) {
         Claims claims = Jwts.parser()
@@ -109,6 +126,14 @@ public class JwtTokenProvider {
         String payloadJwt = new String(decoder.decode(chunks[1]));
         JSONObject payloadJson = new JSONObject(payloadJwt);
         return payloadJson.getString("type");
+    }
+
+    public Date getExpirationDate(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtConfig.getSecretKey())
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getExpiration();
     }
 
     public boolean validateToken(String authToken) {
