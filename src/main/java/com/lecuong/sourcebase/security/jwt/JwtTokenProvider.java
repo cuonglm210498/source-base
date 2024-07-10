@@ -33,10 +33,9 @@ public class JwtTokenProvider {
         Date now = new Date();
 //        Date expiryDate = new Date(now.getTime() + 120000L);
         Date expiryDate = new Date(now.getTime() + jwtConfig.getExpiration());
-        String jti = UUID.randomUUID().toString();
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setId(jti)
+                .setId(UUID.randomUUID().toString())
                 .setIssuer("shop-project")
                 .setSubject(Long.toString(userDetails.getUser().getId()))
                 .setIssuedAt(now)
@@ -55,10 +54,9 @@ public class JwtTokenProvider {
         Date now = new Date();
         // refresh token có thời hạn là 1 tuần
         Date expiryDate = new Date(now.getTime() + jwtConfig.getRefreshTokenExpiration());
-        String jti = UUID.randomUUID().toString();
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setId(jti)
+                .setId(UUID.randomUUID().toString())
                 .setIssuer("shop-project")
                 .setSubject(Long.toString(userDetails.getUser().getId()))
                 .setIssuedAt(now)
@@ -72,10 +70,9 @@ public class JwtTokenProvider {
 
     public String generateRefreshToken(UserDetailsImpl userDetails, Date expiresDate) {
         Date now = new Date();
-        String jti = UUID.randomUUID().toString();
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setId(jti)
+                .setId(UUID.randomUUID().toString())
                 .setIssuer("shop-project")
                 .setSubject(Long.toString(userDetails.getUser().getId()))
                 .setIssuedAt(now)
