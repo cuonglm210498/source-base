@@ -51,11 +51,17 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Transactional
     public void deleteAllByUserName(String userName) {
         List<RefreshToken> refreshTokens = repository.findAllByUserName(userName);
-        repository.saveAll(refreshTokens.stream().peek(refreshToken -> {
-            refreshToken.setIsDeleted(true);
-            refreshToken.setIsActive(false);
-        }).collect(Collectors.toList()));
+        List<RefreshToken> updatedTokens =
+                refreshTokens.stream()
+                        .map(refreshToken -> {
+                            refreshToken.setIsDeleted(true);
+                            refreshToken.setIsActive(false);
+                            return refreshToken;
+                        })
+                        .collect(Collectors.toList());
+        repository.saveAll(updatedTokens);
     }
+
 
     @Override
     @Transactional
