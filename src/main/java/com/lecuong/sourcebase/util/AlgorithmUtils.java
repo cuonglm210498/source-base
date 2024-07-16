@@ -1,5 +1,8 @@
 package com.lecuong.sourcebase.util;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -77,5 +80,18 @@ public class AlgorithmUtils {
 
     public static String base64Encode(byte[] bytes) {
         return org.apache.commons.codec.binary.Base64.encodeBase64String(bytes);
+    }
+
+    public static String convertFileToBase64(MultipartFile file) throws IOException {
+        byte[] fileContent = file.getBytes();
+        return org.apache.commons.codec.binary.Base64.encodeBase64String(fileContent);
+    }
+
+    public static byte[] convertMultipartFileToByteArray(MultipartFile multipartFile) throws IOException {
+        return multipartFile.getBytes();
+    }
+
+    public static byte[] convertBase64ToByteArray(String base64String){
+        return org.apache.commons.codec.binary.Base64.decodeBase64(base64String);
     }
 }
