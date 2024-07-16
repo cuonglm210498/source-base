@@ -5,6 +5,7 @@ import com.lecuong.sourcebase.exception.BusinessException;
 import com.lecuong.sourcebase.exception.StatusTemplate;
 import com.lecuong.sourcebase.modal.response.BaseResponse;
 import com.lecuong.sourcebase.security.UserDetailsServiceImpl;
+import com.lecuong.sourcebase.util.DataUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (!isApiBase.test(request)) {
             String jwt = getJwtFromRequest(request);
+            // Kiểm tra sự tồn tại của token trong mỗi request
+            if (Boolean.FALSE.equals(DataUtils.isTrue(jwt))) {
+                HttpServletResponse resp = response;
+                resp.setStatus(HttpStatus.UNAUTHORIZED.value());
+                BusinessException error = new BusinessException(StatusTemplate.TOKEN_MISSING);
+                this.objectMapper.writeValue(resp.getOutputStream(), BaseResponse.ofFail(error));
+                return;
+            }
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt) && "refresh".equals(tokenProvider.getTypeOfToken(jwt))) {
                 // Kiểm tra nếu là refresh_token và không phải endpoint làm mới token thì trả về lỗi
