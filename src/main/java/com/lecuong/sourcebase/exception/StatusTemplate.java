@@ -30,7 +30,9 @@ public interface StatusTemplate {
     StatusResponse REFRESH_TOKEN_IS_NOT_ALLOWED =
             new StatusResponse("SHOP-REFRESH-TOKEN", "Refresh token is not allowed", HttpStatus.UNAUTHORIZED);
     StatusResponse REFRESH_TOKEN_NOT_FOUND =
-            new StatusResponse("refresh.Token.Not.Found", "Refresh token not found", HttpStatus.NOT_FOUND);
+            new StatusResponse("refresh.Token.Not.Found", "Refresh token not found", HttpStatus.UNAUTHORIZED);
+    StatusResponse TOKEN_MISSING =
+            new StatusResponse("token.Missing", "Token is missing", HttpStatus.UNAUTHORIZED);
 
     /**
      * Exception user
