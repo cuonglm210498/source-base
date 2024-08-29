@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author CuongLM
  * @created 13/08/2023 - 1:24 PM
@@ -37,6 +40,20 @@ public class RestTemplateApiCall {
 
 //        String response = restApiUtils.callRestApi(builder.toUriString(), HttpMethod.GET, String.class);
         String response = restApiUtils.callRestApi(builder.toUriString(), HttpMethod.GET, String.class);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/call-with-list-params")
+    public ResponseEntity<?> getDataFromApiWithListParams() {
+
+        List<String> list = Arrays.asList("1", "2", "3");
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(URL);
+        builder
+                .queryParam("age", String.join(",", list));
+
+        String response = restApiUtils.callRestApi(builder.toUriString(), HttpMethod.GET, null, null, String.class);
 
         return ResponseEntity.ok(response);
     }
