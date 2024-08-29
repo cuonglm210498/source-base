@@ -30,11 +30,11 @@ public class AlgorithmUtils {
         }
     }
 
-    public static String hash(String password)  {
+    public static String hash(String input)  {
         MessageDigest messageDigest = null;
         try {
             messageDigest = MessageDigest.getInstance(SHA_ALGORITHM);
-            byte[] digest = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));
+            byte[] digest = messageDigest.digest(input.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(digest);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -61,6 +61,7 @@ public class AlgorithmUtils {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
+
     }
 
     public static String base64Decode(String s) {
